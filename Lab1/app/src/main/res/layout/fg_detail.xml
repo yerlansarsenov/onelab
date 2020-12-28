@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/frame_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/over_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_detail"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="10dp" />
+
+            <RatingBar
+                android:id="@+id/rate_view_detail"
+                android:theme="@style/FilmRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.01"
+                tools:text="rate" />
+
+            <TextView
+                android:id="@+id/title_view_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="25dp"
+                android:layout_marginBottom="70dp"
+                android:background="#0e000000"
+                android:textColor="@android:color/black"
+                android:textSize="25sp"
+                tools:text="title" />
+
+            <TextView
+                android:id="@+id/relies_view_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="25dp"
+                android:layout_marginBottom="25dp"
+                android:background="#0e000000"
+                android:textColor="@android:color/black"
+                android:textSize="25sp"
+                tools:text="relies" />
+
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/over_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="23sp"
+            app:layout_constraintBottom_toTopOf="@id/writers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frame_detail"
+            tools:text="overview" />
+
+        <LinearLayout
+            android:id="@+id/writers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintBottom_toTopOf="@id/actors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/over_detail"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="23sp"
+                android:text="@string/writers"
+                />
+            <TextView
+                android:id="@+id/writers_tv"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="23sp"
+                tools:text="writers"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/writers"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="23sp"
+                android:text="@string/actors"
+                />
+            <TextView
+                android:id="@+id/actors_tv"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="23sp"
+                tools:text="actors"
+                />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>
