@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
 //                this.dismiss()
 //            }
 //        }
-        val extra1 = intent.getStringExtra(EXTRA_1)
-        val extra2 = intent.getIntExtra(EXTRA_2, 0)
+        val extra1 : String by lazyArg(EXTRA_1)
+        val extra2 : Int by lazyArg(EXTRA_2)
         showText("extra1 = $extra1 \n extra2 = $extra2")
     }
 

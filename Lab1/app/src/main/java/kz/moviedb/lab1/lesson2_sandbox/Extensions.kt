@@ -77,8 +77,6 @@ class MyDialogBuilder(context: Context) {
     }
 }
 
-
-
 inline fun AppCompatActivity.showDialog(builder: MyDialogBuilder.() -> Unit) : Unit{
     val myAlertDialogBuilder = MyDialogBuilder(this)
     myAlertDialogBuilder.builder()
@@ -120,11 +118,11 @@ infix fun <T> T.pairWith(other: T): Pair<T, T> {
  * Extension functions for Fragment, ImageView, RatingBar, Context
  */
 
-fun Fragment.showText(text: String) {
+fun <T: Fragment> T.showText(text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.showText(text: String) {
+fun <T: Activity> T.showText(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
 
@@ -179,5 +177,17 @@ fun Intent.putExtraOfAny(key: String, value: Any?) {
         is LongArray -> putExtra(key, value)
         is ShortArray -> putExtra(key, value)
         is Serializable -> putExtra(key, value)
+    }
+}
+
+/**
+ *  lazyArg
+ *
+ */
+
+inline fun <reified T> Activity.lazyArg(key: String) : Lazy<T> {
+    return lazy(LazyThreadSafetyMode.NONE) {
+        val value = intent.extras?.get(key)
+        return@lazy value as T
     }
 }
