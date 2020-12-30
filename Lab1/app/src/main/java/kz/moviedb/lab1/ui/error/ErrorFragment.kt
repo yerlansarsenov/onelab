@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kz.moviedb.lab1.R
-import kz.moviedb.lab1.lesson2_sandbox.showText
+import kz.moviedb.lab1.lesson2_sandbox.showToast
 
 /**
  * Created by Sarsenov Yerlan on 21.12.2020.
@@ -39,7 +39,7 @@ class ErrorFragment : Fragment() {
         if (errorText.isNotEmpty()) {
             errorTextView.text = errorText
         } else {
-            showText("It is empty Or null")
+            showToast("It is empty Or null")
         }
     }
 

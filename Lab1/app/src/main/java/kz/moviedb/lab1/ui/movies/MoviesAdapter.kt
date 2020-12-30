@@ -26,5 +26,7 @@ class MoviesAdapter(var list: List<Search>, var listener: OnClickListener) : Rec
     interface OnClickListener {
         fun listenOnItemClick(imdbId: String)
     }
+
+
 }
 

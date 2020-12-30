@@ -6,13 +6,16 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.Toast
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -82,7 +85,6 @@ class MyDialogBuilder(context: Context) {
 inline fun AppCompatActivity.showDialog(builder: MyDialogBuilder.() -> Unit) : Unit{
     val myAlertDialogBuilder = MyDialogBuilder(this)
     myAlertDialogBuilder.builder()
-    // myAlertDialogBuilder.builder.setMessage(myAlertDialogBuilder.description)
     myAlertDialogBuilder.builder.show()
 }
 
@@ -117,14 +119,61 @@ infix fun <T> T.pairWith(other: T): Pair<T, T> {
 }
 
 /**
- * Extension functions for Fragment, ImageView, RatingBar, Context
+ * Extension functions for Fragment, ImageView, RatingBar, Context etc.
  */
 
-fun <T: Fragment> T.showText(text: String) {
+fun View.hideKeyboard() {
+    val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun <T: Fragment> T.progressDialog() : AlertDialog? {
+    val padding = 30
+    var linearLayout : LinearLayout? = LinearLayout(activity)
+    linearLayout?.orientation = LinearLayout.HORIZONTAL
+    linearLayout?.setPadding(padding, padding, padding, padding)
+    linearLayout?.gravity = Gravity.CENTER
+    var llParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
+    llParam.gravity = Gravity.CENTER
+    linearLayout?.layoutParams = llParam
+
+    var progressBar : ProgressBar? = ProgressBar(activity)
+    progressBar?.isIndeterminate = true
+    progressBar?.setPadding(0, 0, padding, 0)
+    progressBar?.layoutParams = llParam
+
+    llParam = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT)
+    llParam.gravity = Gravity.CENTER
+
+    var textView : TextView? = TextView(activity)
+    textView?.text = "Loading..."
+    textView?.setTextColor(Color.parseColor("#000000"))
+    textView?.textSize = 20F
+    textView?.layoutParams = llParam
+
+    linearLayout?.addView(progressBar)
+    linearLayout?.addView(textView)
+
+    val builder = AlertDialog.Builder(activity)
+    builder.setCancelable(false)
+    builder.setView(linearLayout)
+
+    linearLayout = null
+    textView = null
+    progressBar = null
+
+    return builder.create()
+}
+
+fun <T: Fragment> T.showToast(text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }
 
-fun <T: Activity> T.showText(text: String) {
+fun <T: Activity> T.showToast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
 

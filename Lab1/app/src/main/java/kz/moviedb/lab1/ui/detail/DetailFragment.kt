@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import kz.moviedb.lab1.R
 import kz.moviedb.lab1.lesson2_sandbox.setImageWithUrl
 import kz.moviedb.lab1.lesson2_sandbox.setImdbRating
-import kz.moviedb.lab1.lesson2_sandbox.showText
 import kz.moviedb.lab1.model.MovieResponse
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter

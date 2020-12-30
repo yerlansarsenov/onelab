@@ -1,6 +1,6 @@
 package kz.moviedb.lab1.ui.movies
 
-import android.app.ProgressDialog
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +12,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
-import kz.moviedb.lab1.lesson2_sandbox.showText
+import kz.moviedb.lab1.lesson2_sandbox.progressDialog
+import kz.moviedb.lab1.lesson2_sandbox.showToast
 import kz.moviedb.lab1.model.MovieResponse
 import kz.moviedb.lab1.model.Search
 import kz.moviedb.lab1.ui.detail.MOVIE_KEY
@@ -29,15 +30,15 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
 
     private val presenter by moxyPresenter { MoviesPresenter() }
 
-    lateinit var progressDialog : ProgressDialog
-
     lateinit var listOfMovies: List<Search>
 
-    lateinit var navController: NavController
+    var navController: NavController? = null
 
     lateinit var recyclerView: RecyclerView
 
-    lateinit var adapter: MoviesAdapter
+    var adapter: MoviesAdapter? = null
+
+    var progressDialog : AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +52,7 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
                 Log.e(MoviesFragment::javaClass.name, "onActivityCreated: ${e.message}")
             }
         } else {
-            showText("It is null")
+            showToast("It is null")
             listOfMovies = emptyList()
         }
     }
@@ -67,6 +68,14 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         recyclerView = view.findViewById(R.id.recycler_view)
+        progressDialog = progressDialog()
+    }
+
+    override fun onDestroyView() {
+        navController = null
+        recyclerView.adapter = null
+        recyclerView.layoutManager = null
+        super.onDestroyView()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,21 +83,26 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
         adapter = MoviesAdapter(listOfMovies, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        progressDialog = ProgressDialog(activity)
+
+    }
+
+    override fun onDetach() {
+        progressDialog = null
+        super.onDetach()
     }
 
     override fun showLoading() {
         Log.e(MoviesFragment::javaClass.name, "showLoading: ")
-        progressDialog.show()
+        progressDialog?.show()
     }
 
     override fun hideLoading() {
         Log.e(MoviesFragment::javaClass.name, "hideLoading: ")
-        progressDialog.hide()
+        progressDialog?.dismiss()
     }
 
     override fun showError(error: String) {
-        showText(error)
+        showToast(error)
     }
 
     override fun openMovieDetail(movieResponse: MovieResponse) {
@@ -96,7 +110,7 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
         val args = bundleOf(
                 MOVIE_KEY to movieResponse
         )
-        navController.navigate(R.id.action_movies_fg_to_detailFragment, args)
+        navController?.navigate(R.id.action_movies_fg_to_detailFragment, args)
     }
 
     override fun listenOnItemClick(imdbId: String) {

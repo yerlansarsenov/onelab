@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import kz.moviedb.lab1.R
 import kz.moviedb.lab1.ui.MainActivity
 
@@ -30,9 +29,9 @@ class TestActivity2 : AppCompatActivity() {
         }
         val hasInternetPermission = (this as Context).checkPermission(android.Manifest.permission.INTERNET)
         if (hasInternetPermission) {
-            showText("has internet permission")
+            showToast("has internet permission")
         } else {
-            showText("has not internet permission")
+            showToast("has not internet permission")
         }
     }
 }

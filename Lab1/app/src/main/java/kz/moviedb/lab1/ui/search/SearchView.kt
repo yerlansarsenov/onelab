@@ -11,10 +11,10 @@ import moxy.viewstate.strategy.alias.Skip
  */
 interface SearchView : MvpView {
     //@AddToEndSingle
-    @OneExecution
+    @Skip
     fun showLoading()
     //@AddToEndSingle
-    @OneExecution
+    @Skip
     fun hideLoading()
     //@AddToEndSingle
     @Skip

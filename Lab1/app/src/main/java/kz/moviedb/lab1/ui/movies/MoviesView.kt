@@ -10,10 +10,10 @@ import moxy.viewstate.strategy.alias.Skip
  */
 interface MoviesView : MvpView {
 
-    @OneExecution
+    @Skip
     fun showLoading()
 
-    @OneExecution
+    @Skip
     fun hideLoading()
 
     @Skip
