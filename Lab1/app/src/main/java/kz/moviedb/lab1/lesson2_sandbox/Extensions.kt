@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -140,8 +142,10 @@ fun RatingBar.setImdbRating(rate: String) {
     }
 }
 
-fun Context.checkPermission(permission: String) : Boolean =
-    this.checkCallingPermission(permission) == PERMISSION_GRANTED
+@RequiresApi(Build.VERSION_CODES.M)
+fun Context.checkPermission(permission: String) : Boolean {
+    return this.checkSelfPermission(permission) == PERMISSION_GRANTED
+}
 
 /**
  * intentFor

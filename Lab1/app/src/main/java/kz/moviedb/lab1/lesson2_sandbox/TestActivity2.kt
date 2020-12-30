@@ -31,7 +31,8 @@ class TestActivity2 : AppCompatActivity() {
         val hasInternetPermission = (this as Context).checkPermission(android.Manifest.permission.INTERNET)
         if (hasInternetPermission) {
             showText("has internet permission")
+        } else {
+            showText("has not internet permission")
         }
-
     }
 }
