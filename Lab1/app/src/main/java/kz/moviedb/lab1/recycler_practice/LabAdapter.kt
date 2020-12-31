@@ -1,5 +1,7 @@
 package kz.moviedb.lab1.recycler_practice
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
+import java.io.Serializable
 
 /**
  * Created by Sarsenov Yerlan on 28.12.2020.
@@ -45,6 +48,16 @@ val onCheckBoxClickListener: (position: Int, isChecked: Boolean) -> Unit
             R.layout.it_recycler_practice_1 -> (holder as LabViewHolderSimple).bind(list1[position] as GeneralType.TypeSimple)
             R.layout.it_recycler_practice_2 -> (holder as LabViewHolderButton).bind(list1[position] as GeneralType.TypeButton)
             R.layout.it_recycler_practice_3 -> (holder as LabViewHolderCheckBox).bind(list1[position] as GeneralType.TypeCheckBox)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isEmpty()) return
+        try {
+            (holder as LabViewHolderCheckBox).bind(payloads.first() as Boolean)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -94,9 +107,12 @@ class LabViewHolderCheckBox(
 
     init {
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
-        checkBox.setOnCheckedChangeListener {
+        /*checkBox.setOnCheckedChangeListener {
             _: CompoundButton, isChecked: Boolean ->
             onCheckBoxClickListener.invoke(adapterPosition, !isChecked)
+        }*/
+        checkBox.setOnClickListener {
+            onCheckBoxClickListener.invoke(adapterPosition, (it as CheckBox).isChecked)
         }
     }
 
@@ -104,6 +120,11 @@ class LabViewHolderCheckBox(
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
         checkBox.isChecked = item.isChecked
         checkBox.text = item.name
+    }
+
+    fun bind(isChecked: Boolean) {
+        val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
+        checkBox.isChecked = isChecked
     }
 
     fun unbind() {
@@ -114,7 +135,7 @@ class LabViewHolderCheckBox(
 }
 
 sealed class GeneralType {
-    data class TypeSimple(val name: String): GeneralType()
+    data class TypeSimple(val name: String?): GeneralType()
     class TypeButton : GeneralType()
     data class TypeCheckBox(val name: String, var isChecked: Boolean = false) : GeneralType()
 }

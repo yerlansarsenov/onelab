@@ -1,8 +1,11 @@
 package kz.moviedb.lab1.recycler_practice
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
@@ -15,7 +18,7 @@ class TestActivity3 : AppCompatActivity() {
 
     private val labAdapter = LabAdapter(::onButtonClicked, ::onCheckBoxChecked)
 
-    val list = mutableListOf<GeneralType>(
+    var list = mutableListOf(
             GeneralType.TypeSimple("Text1"),
             GeneralType.TypeButton(),
             GeneralType.TypeCheckBox("Text1"),
@@ -48,9 +51,9 @@ class TestActivity3 : AppCompatActivity() {
 
     private fun onCheckBoxChecked(position: Int, isChecked: Boolean) {
         val isCheckedText = if (isChecked) {
-            "unchecked"
-        } else {
             "checked"
+        } else {
+            "unchecked"
         }
         showToast("$isCheckedText $position")
         (list[position] as GeneralType.TypeCheckBox).isChecked = isChecked
@@ -63,7 +66,12 @@ class TestActivity3 : AppCompatActivity() {
         val recView = findViewById<RecyclerView>(R.id.recycler_view_)
         recView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recView.adapter = labAdapter
+        recView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         labAdapter.list1 = list
+        Handler(Looper.getMainLooper()).postDelayed({
+            list[2] = (list[2] as GeneralType.TypeCheckBox).copy(isChecked = !(list[2] as GeneralType.TypeCheckBox).isChecked)
+            labAdapter.notifyItemChanged(2)
+                                                    }, 3000)
     }
 
 }
