@@ -6,6 +6,7 @@ import android.os.Looper
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
@@ -19,30 +20,30 @@ class TestActivity3 : AppCompatActivity() {
     private val labAdapter = LabAdapter(::onButtonClicked, ::onCheckBoxChecked)
 
     var list = mutableListOf(
-            GeneralType.TypeSimple("Text1"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text1"),
-            GeneralType.TypeSimple("Text2"),
+            GeneralType.TypeCheckBox("Text"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeSimple("Text3"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text2"),
+            GeneralType.TypeCheckBox("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text3"),
-            GeneralType.TypeSimple("Text4"),
-            GeneralType.TypeCheckBox("Text4"),
-            GeneralType.TypeSimple("Text5"),
+            GeneralType.TypeCheckBox("Text"),
+            GeneralType.TypeSimple("Text"),
+            GeneralType.TypeCheckBox("Text"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text5"),
-            GeneralType.TypeSimple("Text6"),
+            GeneralType.TypeCheckBox("Text"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeSimple("Text7"),
+            GeneralType.TypeSimple("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text6"),
+            GeneralType.TypeCheckBox("Text"),
             GeneralType.TypeButton(),
-            GeneralType.TypeCheckBox("Text7"),
-            GeneralType.TypeSimple("Text8"),
-            GeneralType.TypeCheckBox("Text8")
+            GeneralType.TypeCheckBox("Text"),
+            GeneralType.TypeSimple("Text"),
+            GeneralType.TypeCheckBox("Text")
     )
 
     private fun onButtonClicked(position: Int) {
@@ -62,7 +63,6 @@ class TestActivity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler)
-        showToast("here")
         val recView = findViewById<RecyclerView>(R.id.recycler_view_)
         recView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recView.adapter = labAdapter

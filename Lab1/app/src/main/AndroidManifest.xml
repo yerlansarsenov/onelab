@@ -14,9 +14,11 @@
         <activity android:name=".lesson2_sandbox.TestActivity2">
         </activity>
         <activity android:name=".ui.MainActivity">
-
         </activity>
         <activity android:name=".recycler_practice.TestActivity3">
+
+        </activity>
+        <activity android:name=".recycler_practice.TestActivity4">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

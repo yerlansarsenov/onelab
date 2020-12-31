@@ -29,7 +29,7 @@ val onCheckBoxClickListener: (position: Int, isChecked: Boolean) -> Unit
             R.layout.it_recycler_practice_1 -> LabViewHolderSimple(view)
             R.layout.it_recycler_practice_2 -> LabViewHolderButton(onButtonClickListener, view)
             R.layout.it_recycler_practice_3 -> LabViewHolderCheckBox(onCheckBoxClickListener, view)
-            else -> return throw NotImplementedError()
+            else -> throw NotImplementedError()
         }
     }
 
@@ -75,7 +75,7 @@ val onCheckBoxClickListener: (position: Int, isChecked: Boolean) -> Unit
 class LabViewHolderSimple(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: GeneralType.TypeSimple) {
         val tv = itemView.findViewById<TextView>(R.id.textview)
-        tv.text = item.name
+        tv.text = "${item.name} ${adapterPosition}"
     }
 
     fun unbind() {
@@ -119,7 +119,7 @@ class LabViewHolderCheckBox(
     fun bind(item: GeneralType.TypeCheckBox) {
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
         checkBox.isChecked = item.isChecked
-        checkBox.text = item.name
+        checkBox.text = "${item.name} ${adapterPosition}"
     }
 
     fun bind(isChecked: Boolean) {
@@ -135,7 +135,7 @@ class LabViewHolderCheckBox(
 }
 
 sealed class GeneralType {
-    data class TypeSimple(val name: String?): GeneralType()
+    data class TypeSimple(var name: String?): GeneralType()
     class TypeButton : GeneralType()
     data class TypeCheckBox(val name: String, var isChecked: Boolean = false) : GeneralType()
 }
