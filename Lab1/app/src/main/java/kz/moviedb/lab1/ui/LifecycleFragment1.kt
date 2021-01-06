@@ -14,7 +14,7 @@ import kz.moviedb.lab1.R
  */
 class LifecycleFragment1 : Fragment() {
 
-    val activityViewModel by activityViewModels<LifecycleViewModel>()
+    private val activityViewModel by activityViewModels<LifecycleViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

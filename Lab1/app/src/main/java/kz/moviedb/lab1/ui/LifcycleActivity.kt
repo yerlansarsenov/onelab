@@ -13,17 +13,20 @@ import kz.moviedb.lab1.R
 
 const val SOME_VALUE = "random text"
 
-class LifcycleActivity : AppCompatActivity(R.layout.activity_lifecycle) {
+class LifcycleActivity : AppCompatActivity() {
 
     private val viewModel: LifecycleViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        viewModel.liveData.value = SOME_VALUE
+        setContentView(R.layout.activity_lifecycle)
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_1, LifecycleFragment1())
+                .commit()
+        supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_2, LifecycleFragment2())
                 .commit()
+        viewModel.liveData.value = SOME_VALUE
     }
 
 }

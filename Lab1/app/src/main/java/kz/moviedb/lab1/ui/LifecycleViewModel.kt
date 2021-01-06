@@ -11,8 +11,4 @@ class LifecycleViewModel : ViewModel() {
 
     val liveData = MutableLiveData<String>()
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
 }
