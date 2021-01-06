@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
 import kz.moviedb.lab1.R
+import kz.moviedb.lab1.lesson2_sandbox.showToast
 
 /**
  * Created by Sarsenov Yerlan on 06.01.2021.
@@ -17,14 +18,15 @@ class LifcycleActivity : AppCompatActivity() {
 
     private val viewModel: LifecycleViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        showToast("here")
         setContentView(R.layout.activity_lifecycle)
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_1, LifecycleFragment1())
+                .replace(R.id.fragment_1, LifecycleFragment1())
                 .commit()
         supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_2, LifecycleFragment2())
+                .replace(R.id.fragment_2, LifecycleFragment2())
                 .commit()
         viewModel.liveData.value = SOME_VALUE
     }

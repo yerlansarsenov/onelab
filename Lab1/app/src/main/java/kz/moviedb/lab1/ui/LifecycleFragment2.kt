@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import kz.moviedb.lab1.R
+import kz.moviedb.lab1.lesson2_sandbox.showToast
 
 /**
  * Created by Sarsenov Yerlan on 06.01.2021.
@@ -26,8 +27,9 @@ class LifecycleFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val textView = view.findViewById<TextView>(R.id.text_view)
         activityViewModel.liveData.observe(viewLifecycleOwner) {
-            val textView = view.findViewById<TextView>(R.id.textview)
+            showToast("$it fragment2")
             textView.text = it
         }
     }
