@@ -1,7 +1,6 @@
 package kz.moviedb.lab1.ui.movies
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R

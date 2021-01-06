@@ -21,6 +21,14 @@ class MoviesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener {
             listener.listenOnItemClick(movie.imdbID)
         }
+        itemView.animate()
+                .rotation(360f)
+                .setDuration(300)
+                .start()
+//        itemView.animate()
+//                .rotation(10F)
+//                .setDuration(200)
+//                .start()
     }
 
 }

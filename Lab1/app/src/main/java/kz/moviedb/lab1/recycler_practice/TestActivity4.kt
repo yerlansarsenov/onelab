@@ -112,10 +112,3 @@ class TestActivity4 : AppCompatActivity(R.layout.activity_recycler) {
     }
 
 }
-
-//
-//class CustomGridLayoutManager(context: Context, spanCount: Int) : GridLayoutManager(context, spanCount) {
-//
-//
-//
-//}

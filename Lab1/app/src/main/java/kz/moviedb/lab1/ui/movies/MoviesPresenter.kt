@@ -10,7 +10,6 @@ import kz.moviedb.lab1.api.ApiUtils
 import kz.moviedb.lab1.model.MovieResponse
 import moxy.MvpPresenter
 import moxy.presenterScope
-import okhttp3.internal.wait
 
 /**
  * Created by Sarsenov Yerlan on 21.12.2020.

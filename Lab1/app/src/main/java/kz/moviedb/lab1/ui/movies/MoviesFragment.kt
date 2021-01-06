@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
@@ -83,7 +84,7 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
         adapter = MoviesAdapter(listOfMovies, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-
+        recyclerView.addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager.VERTICAL))
     }
 
     override fun onDetach() {
