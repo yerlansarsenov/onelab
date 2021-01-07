@@ -1,10 +1,8 @@
-package kz.moviedb.lab1.ui
+package kz.moviedb.lab1.lifecycle_pratice
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleObserver
 import kz.moviedb.lab1.R
 import kz.moviedb.lab1.lesson2_sandbox.showToast
 

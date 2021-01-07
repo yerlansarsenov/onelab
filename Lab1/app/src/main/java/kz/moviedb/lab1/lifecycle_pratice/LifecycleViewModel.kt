@@ -1,4 +1,4 @@
-package kz.moviedb.lab1.ui
+package kz.moviedb.lab1.lifecycle_pratice
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

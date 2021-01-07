@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.lab1.R
+import kz.moviedb.lab1.lesson2_sandbox.lazyArg
 import kz.moviedb.lab1.lesson2_sandbox.progressDialog
 import kz.moviedb.lab1.lesson2_sandbox.showToast
 import kz.moviedb.lab1.model.MovieResponse
@@ -31,7 +32,9 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
 
     private val presenter by moxyPresenter { MoviesPresenter() }
 
-    lateinit var listOfMovies: List<Search>
+    //lateinit var listOfMovies: List<Search>
+
+    val listOfMovies by lazyArg<List<Search>>(LIST_OF_MOVIES)
 
     var navController: NavController? = null
 
@@ -43,7 +46,7 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
+        /*if (arguments != null) {
             val list = requireArguments().get(LIST_OF_MOVIES)
             try {
                 listOfMovies = list as List<Search>
@@ -55,7 +58,7 @@ class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClick
         } else {
             showToast("It is null")
             listOfMovies = emptyList()
-        }
+        }*/
     }
 
     override fun onCreateView(

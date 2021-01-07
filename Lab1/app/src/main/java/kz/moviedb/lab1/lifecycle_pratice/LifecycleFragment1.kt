@@ -1,4 +1,4 @@
-package kz.moviedb.lab1.ui
+package kz.moviedb.lab1.lifecycle_pratice
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import kz.moviedb.lab1.lesson2_sandbox.showToast
 /**
  * Created by Sarsenov Yerlan on 06.01.2021.
  */
-class LifecycleFragment2 : Fragment() {
+class LifecycleFragment1 : Fragment() {
 
     private val activityViewModel by activityViewModels<LifecycleViewModel>()
 
@@ -29,7 +29,7 @@ class LifecycleFragment2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val textView = view.findViewById<TextView>(R.id.text_view)
         activityViewModel.liveData.observe(viewLifecycleOwner) {
-            showToast("$it fragment2")
+            showToast("$it fragment1")
             textView.text = it
         }
     }

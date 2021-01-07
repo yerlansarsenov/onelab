@@ -162,9 +162,43 @@ fun <T: Fragment> T.progressDialog() : AlertDialog? {
     builder.setCancelable(false)
     builder.setView(linearLayout)
 
-    linearLayout = null
-    textView = null
-    progressBar = null
+    return builder.create()
+}
+
+fun <T: Activity> T.progressDialog() : AlertDialog? {
+    val padding = 30
+    var linearLayout : LinearLayout? = LinearLayout(this)
+    linearLayout?.orientation = LinearLayout.HORIZONTAL
+    linearLayout?.setPadding(padding, padding, padding, padding)
+    linearLayout?.gravity = Gravity.CENTER
+    var llParam = LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT)
+    llParam.gravity = Gravity.CENTER
+    linearLayout?.layoutParams = llParam
+
+    var progressBar : ProgressBar? = ProgressBar(this)
+    progressBar?.isIndeterminate = true
+    progressBar?.setPadding(0, 0, padding, 0)
+    progressBar?.layoutParams = llParam
+
+    llParam = LinearLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT)
+    llParam.gravity = Gravity.CENTER
+
+    var textView : TextView? = TextView(this)
+    textView?.text = "Loading..."
+    textView?.setTextColor(Color.parseColor("#000000"))
+    textView?.textSize = 20F
+    textView?.layoutParams = llParam
+
+    linearLayout?.addView(progressBar)
+    linearLayout?.addView(textView)
+
+    val builder = AlertDialog.Builder(this)
+    builder.setCancelable(false)
+    builder.setView(linearLayout)
 
     return builder.create()
 }
@@ -241,6 +275,17 @@ fun Intent.putExtraOfAny(key: String, value: Any?) {
 inline fun <reified T> Activity.lazyArg(key: String) : Lazy<T> {
     return lazy(LazyThreadSafetyMode.NONE) {
         val value = intent.extras?.get(key)
+        return@lazy value as T
+    }
+}
+
+/**
+ * lazyArg for Fragments
+ */
+
+inline fun <reified T> Fragment.lazyArg(key: String) : Lazy<T> {
+    return lazy(LazyThreadSafetyMode.NONE) {
+        val value = requireArguments().get(key)
         return@lazy value as T
     }
 }

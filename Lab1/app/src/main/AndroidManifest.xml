@@ -12,25 +12,23 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".lesson2_sandbox.TestActivity2">
-        </activity>
-        <activity android:name=".ui.MainActivity">
-        </activity>
-        <activity android:name=".recycler_practice.TestActivity3">
+        <activity android:name=".lesson2_sandbox.TestActivity2"></activity>
 
-        </activity>
-        <activity android:name=".recycler_practice.TestActivity4">
+        <activity android:name=".ui.MainActivity"></activity>
 
-        </activity>
+        <activity android:name=".recycler_practice.TestActivity3"></activity>
 
-        <activity android:name=".ui.LifcycleActivity">
+        <activity android:name=".recycler_practice.TestActivity4"></activity>
+
+        <activity android:name=".lifecycle_pratice.LifcycleActivity"></activity>
+
+        <activity android:name=".ui_viewmodel.ViewModelMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
+
     </application>
 
 </manifest>

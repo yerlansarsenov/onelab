@@ -1,4 +1,4 @@
-package kz.moviedb.lab1.ui.error
+package kz.moviedb.lab1.ui_viewmodel.error
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,7 @@ class ErrorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //errorText = requireArguments().getString(ERROR_TEXT, "")
+       // errorText = requireArguments().getString(ERROR_TEXT, "")
     }
 
     override fun onCreateView(
