@@ -52,9 +52,6 @@ class DetailViewModel : ViewModel() {
 
     override fun onCleared() {
         viewModelScope.cancel()
-        _livaDdataMovie.value = null
-        _liveDataHasInternetProblems.value = false
-        _liveDataLoading.value = false
         super.onCleared()
     }
 

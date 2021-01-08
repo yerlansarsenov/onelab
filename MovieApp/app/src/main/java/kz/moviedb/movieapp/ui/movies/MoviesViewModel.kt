@@ -36,18 +36,6 @@ class MoviesViewModel : ViewModel() {
                     try {
                         _liveDataSearchResponse.value = result
                         Log.e("ViewModel", "searchMoviesByName: result")
-                        /*try {
-                            liveDataSearchResponse.value?.let {
-                                viewState.openMovies(it.Search)
-                            }
-                        } catch (e: NullPointerException) {
-                            Log.e("NullPointer", "onViewCreated: " + e.message)
-                            try {
-                                liveDataSearchResponse.value?.let { viewState.openError(it.Error) }
-                            } catch (e: Exception) {
-                                Log.e("Exception", "onViewCreated: " + e.message)
-                            }
-                        }*/
                     } catch (e: NetworkErrorException) {
                         _liveDataHasInternetProblems.value = true
                         Log.e("ViewModel", "searchMoviesByName: catch1 ${e.message}")
@@ -66,9 +54,6 @@ class MoviesViewModel : ViewModel() {
 
     override fun onCleared() {
         viewModelScope.cancel()
-        _liveDataHasInternetProblems.value = false
-        _liveDataLoading.value = false
-        _liveDataSearchResponse.value = null
         super.onCleared()
     }
 
