@@ -1,18 +1,17 @@
-package kz.moviedb.lab1.ui_viewmodel.movies
+package kz.moviedb.movieapp.ui.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import kz.moviedb.lab1.R
-import kz.moviedb.lab1.model.Search
+import kz.moviedb.movieapp.R
+import kz.moviedb.movieapp.model.Search
 
 /**
  * Created by Sarsenov Yerlan on 25.12.2020.
  */
 class MoviesAdapter(
-    val listener: (id: String) -> Unit
+    private val listener: (id: String) -> Unit
 ) : ListAdapter<Search, MoviesHolder>(SearchDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesHolder {

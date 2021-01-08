@@ -1,12 +1,12 @@
-package kz.moviedb.lab1.ui_viewmodel.movies
+package kz.moviedb.movieapp.ui.movies
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kz.moviedb.lab1.R
-import kz.moviedb.lab1.lesson2_sandbox.setImageWithUrl
-import kz.moviedb.lab1.model.Search
+import kz.moviedb.movieapp.R
+import kz.moviedb.movieapp.model.Search
+import kz.moviedb.movieapp.utils.setImageWithUrl
 
 /**
  * Created by Sarsenov Yerlan on 25.12.2020.

@@ -19,12 +19,7 @@ class ErrorFragment : Fragment() {
 
     //lateinit var errorText: String
 
-    val errorText by lazyArg<String>(ERROR_TEXT)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-       // errorText = requireArguments().getString(ERROR_TEXT, "")
-    }
+    private val errorText by lazyArg<String>(ERROR_TEXT)
 
     override fun onCreateView(
         inflater: LayoutInflater,

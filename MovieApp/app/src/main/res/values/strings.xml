@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="for_ex_star_wars">for ex. Star Wars</string>
+    <string name="search">search</string>
+    <string name="search_">Search</string>
+    <string name="movies">Movies</string>
+    <string name="error">Error</string>
+    <string name="error_">Error!!!</string>
+    <string name="genres">Genres</string>
+    <string name="production_companies">Production companies</string>
+    <string name="actors">Actors</string>
+    <string name="writers">Writers</string>
+    <string name="hello">hello</string>
+</resources>

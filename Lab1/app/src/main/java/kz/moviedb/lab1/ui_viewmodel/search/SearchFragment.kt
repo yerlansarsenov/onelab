@@ -16,10 +16,10 @@ import kz.moviedb.lab1.lesson2_sandbox.hideKeyboard
 import kz.moviedb.lab1.lesson2_sandbox.progressDialog
 import kz.moviedb.lab1.lesson2_sandbox.showToast
 import kz.moviedb.lab1.model.Search
-import kz.moviedb.lab1.ui.error.ERROR_TEXT
-import kz.moviedb.lab1.ui.movies.LIST_OF_MOVIES
 import kz.moviedb.lab1.ui_viewmodel.ViewModelMainActivity
+import kz.moviedb.lab1.ui_viewmodel.error.ERROR_TEXT
 import kz.moviedb.lab1.ui_viewmodel.error.ErrorFragment
+import kz.moviedb.lab1.ui_viewmodel.movies.LIST_OF_MOVIES
 import kz.moviedb.lab1.ui_viewmodel.movies.MoviesFragment
 
 /**
@@ -49,10 +49,8 @@ class SearchFragment : Fragment() {
         viewModel.liveDataSearchResponse.observe(viewLifecycleOwner) { response ->
             // from the server only 2 cases are comes: either Error or list of films
             if (response.Error != null && response.Error.isNotEmpty()) {
-                showToast("error")
                 openError(response.Error)
             } else if (response.Search.isNotEmpty()) {
-                showToast(response.Search[0].Title)
                 openMovies(response.Search)
             }
         }
@@ -98,14 +96,14 @@ class SearchFragment : Fragment() {
         val args = bundleOf(
             ERROR_TEXT to error
         )
-        (activity as ViewModelMainActivity).replaceFragment(ErrorFragment::class.java, args)
+        (activity as ViewModelMainActivity).replaceFragment(R.id.action_searchFragment_to_errorFragment2, args)
     }
 
     private fun openMovies(list: List<Search>) {
         val args = bundleOf(
             LIST_OF_MOVIES to list
         )
-        (activity as ViewModelMainActivity).replaceFragment(MoviesFragment::class.java, args)
+        (activity as ViewModelMainActivity).replaceFragment(R.id.action_searchFragment_to_moviesFragment2, args)
     }
 
     override fun onDetach() {

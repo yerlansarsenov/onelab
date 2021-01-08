@@ -18,22 +18,23 @@ import kz.moviedb.lab1.lesson2_sandbox.progressDialog
 import kz.moviedb.lab1.lesson2_sandbox.showToast
 import kz.moviedb.lab1.model.MovieResponse
 import kz.moviedb.lab1.model.Search
-import kz.moviedb.lab1.ui.detail.MOVIE_KEY
 import kz.moviedb.lab1.ui_viewmodel.ViewModelMainActivity
-import kz.moviedb.lab1.ui_viewmodel.detail.DetailFragment
+import kz.moviedb.lab1.ui_viewmodel.detail.MOVIE_KEY
 
 /**
  * Created by Sarsenov Yerlan on 21.12.2020.
  */
 const val LIST_OF_MOVIES = "list_of_movies"
 
-class MoviesFragment : Fragment(), MoviesAdapter.OnClickListener {
+class MoviesFragment : Fragment() {
 
     private val listOfMovies by lazyArg<List<Search>>(LIST_OF_MOVIES)
 
     lateinit var recyclerView: RecyclerView
 
-    var adapter: MoviesAdapter? = null
+    val adapter: MoviesAdapter by lazy {
+        MoviesAdapter(::listenOnItemClick)
+    }
 
     var progressDialog: AlertDialog? = null
 
@@ -51,6 +52,7 @@ class MoviesFragment : Fragment(), MoviesAdapter.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recycler_view)
         progressDialog = progressDialog()
+        adapter.submitList(listOfMovies)
         viewModel.liveDataHasInternetProblems.observe(viewLifecycleOwner) {
             if (it) {
                 showError("Some problems with internet")
@@ -80,7 +82,6 @@ class MoviesFragment : Fragment(), MoviesAdapter.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        adapter = MoviesAdapter(listOfMovies, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(
@@ -110,7 +111,7 @@ class MoviesFragment : Fragment(), MoviesAdapter.OnClickListener {
         showToast(error)
     }
 
-    override fun listenOnItemClick(imdbId: String) {
+    private fun listenOnItemClick(imdbId: String) {
         viewModel.searchMovieById(imdbId)
     }
 
@@ -118,7 +119,7 @@ class MoviesFragment : Fragment(), MoviesAdapter.OnClickListener {
         val args = bundleOf(
             MOVIE_KEY to movieResponse
         )
-        (activity as ViewModelMainActivity).replaceFragment(DetailFragment::class.java, args)
+        (activity as ViewModelMainActivity).replaceFragment(R.id.action_moviesFragment_to_detailFragment, args)
     }
 
 }

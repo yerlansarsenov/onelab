@@ -1,4 +1,4 @@
-package kz.moviedb.lab1.ui_viewmodel.movies
+package kz.moviedb.movieapp.ui.movies
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kz.moviedb.lab1.api.ApiUtils
-import kz.moviedb.lab1.model.MovieResponse
+import kz.moviedb.movieapp.api.ApiUtils
+import kz.moviedb.movieapp.model.MovieResponse
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
@@ -52,6 +52,9 @@ class MoviesViewModel : ViewModel() {
 
     override fun onCleared() {
         viewModelScope.cancel()
+        _livaDdataMovie.value = null
+        _liveDataHasInternetProblems.value = false
+        _liveDataLoading.value = false
         super.onCleared()
     }
 

@@ -1,4 +1,4 @@
-package kz.moviedb.lab1.ui_viewmodel.search
+package kz.moviedb.movieapp.ui.search
 
 import android.accounts.NetworkErrorException
 import android.util.Log
@@ -10,12 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kz.moviedb.lab1.api.ApiUtils
-import kz.moviedb.lab1.model.Search
-import kz.moviedb.lab1.model.SearchResponse
+import kz.moviedb.movieapp.api.ApiUtils
+import kz.moviedb.movieapp.model.SearchResponse
 
 /**
- * Created by Sarsenov Yerlan on 06.01.2021.
+ * Created by Sarsenov Yerlan on 07.01.2021.
  */
 class SearchViewModel : ViewModel() {
     private var _liveDataSearchResponse = MutableLiveData<SearchResponse>()
@@ -67,6 +66,9 @@ class SearchViewModel : ViewModel() {
 
     override fun onCleared() {
         viewModelScope.cancel()
+        _liveDataHasInternetProblems.value = false
+        _liveDataLoading.value = false
+        _liveDataSearchResponse.value = null
         super.onCleared()
     }
 
