@@ -1,5 +1,6 @@
 package kz.moviedb.movieapp.ui.movies
 
+import android.accounts.NetworkErrorException
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,16 +11,15 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kz.moviedb.movieapp.api.ApiUtils
-import kz.moviedb.movieapp.model.MovieResponse
+import kz.moviedb.movieapp.model.SearchResponse
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
  */
 class MoviesViewModel : ViewModel() {
-
-    private val _livaDdataMovie = MutableLiveData<MovieResponse>()
-    val liveDataMovie: LiveData<MovieResponse>
-        get() = _livaDdataMovie
+    private var _liveDataSearchResponse = MutableLiveData<SearchResponse>()
+    val liveDataSearchResponse: LiveData<SearchResponse>
+        get() = _liveDataSearchResponse
     private var _liveDataLoading = MutableLiveData<Boolean>(false)
     val liveDataLoading: LiveData<Boolean>
         get() = _liveDataLoading
@@ -27,34 +27,48 @@ class MoviesViewModel : ViewModel() {
     val liveDataHasInternetProblems: LiveData<Boolean>
         get() = _liveDataHasInternetProblems
 
-
-    fun searchMovieById(id: String) {
+    fun searchMoviesByName(name: String) {
         viewModelScope.launch {
             try {
-                val result = ApiUtils.api().getMovieById(id).await()
+                val result = ApiUtils.api().getMovieBySearch(name).await()
                 withContext(Dispatchers.Main) {
                     _liveDataLoading.value = true
                     try {
-                        _livaDdataMovie.value = result
-                    } catch (e: Exception) {
-                        Log.e("ViewModel", "searchMovieById: ${e.message}")
+                        _liveDataSearchResponse.value = result
+                        Log.e("ViewModel", "searchMoviesByName: result")
+                        /*try {
+                            liveDataSearchResponse.value?.let {
+                                viewState.openMovies(it.Search)
+                            }
+                        } catch (e: NullPointerException) {
+                            Log.e("NullPointer", "onViewCreated: " + e.message)
+                            try {
+                                liveDataSearchResponse.value?.let { viewState.openError(it.Error) }
+                            } catch (e: Exception) {
+                                Log.e("Exception", "onViewCreated: " + e.message)
+                            }
+                        }*/
+                    } catch (e: NetworkErrorException) {
                         _liveDataHasInternetProblems.value = true
+                        Log.e("ViewModel", "searchMoviesByName: catch1 ${e.message}")
+                    } catch (e: Exception) {
+                        Log.e("ViewModel", "searchMoviesByName: catch2 ${e.message}")
                     } finally {
                         _liveDataLoading.value = false
                     }
                 }
             } catch (e: Exception) {
-                Log.e("ViewModel", "searchMovieById: ${e.message}")
                 _liveDataHasInternetProblems.value = true
+                Log.e("ViewModel", "searchMoviesByName: catch3 ${e.message}")
             }
         }
     }
 
     override fun onCleared() {
         viewModelScope.cancel()
-        _livaDdataMovie.value = null
         _liveDataHasInternetProblems.value = false
         _liveDataLoading.value = false
+        _liveDataSearchResponse.value = null
         super.onCleared()
     }
 

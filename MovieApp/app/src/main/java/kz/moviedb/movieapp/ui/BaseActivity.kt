@@ -3,7 +3,9 @@ package kz.moviedb.movieapp.ui
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kz.moviedb.movieapp.R
 import kz.moviedb.movieapp.ui.movies.MoviesActivity
 import kz.moviedb.movieapp.utils.progressDialog
 
@@ -32,6 +34,11 @@ abstract class BaseActivity(resId: Int) : AppCompatActivity(resId) {
     fun hideLoading() {
         Log.e(MoviesActivity::javaClass.name, "hideLoading: ")
         progressDialog?.dismiss()
+    }
+
+    fun showError(error: String) {
+        setContentView(R.layout.ac_error)
+        findViewById<TextView>(R.id.error_description).text = error
     }
 
 }

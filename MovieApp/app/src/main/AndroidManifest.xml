@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.detail.DetailActivity"/>
-        <activity android:name=".ui.ErrorPage"/>
         <activity android:name=".ui.movies.MoviesActivity"/>
     </application>
 
