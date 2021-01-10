@@ -24,13 +24,12 @@ object ApiUtils {
 
     private fun retrofit() : Retrofit {
         val gson = Gson()
-        val retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(BuildConfig.MOVIES_URL)
             .client(client())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
-        return retrofit
     }
 
     fun api(): MovieAPI = retrofit().create(MovieAPI::class.java)
