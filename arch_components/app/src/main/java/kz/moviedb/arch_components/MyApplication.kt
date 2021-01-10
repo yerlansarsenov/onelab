@@ -27,9 +27,9 @@ class MyApplication : Application() {
         val manager = WorkManager.getInstance(applicationContext)
         val periodicWorkRequest = PeriodicWorkRequestBuilder<CitationWorker>(
             PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.MINUTES,
+            TimeUnit.MILLISECONDS,
             PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-            TimeUnit.MINUTES
+            TimeUnit.MILLISECONDS
         ).addTag(CITATION_DOWNLOADING_WORK).build()
         val initWorkRequest = OneTimeWorkRequestBuilder<CitationWorker>().addTag(
             CITATION_DOWNLOADING_WORK_INIT).build()
