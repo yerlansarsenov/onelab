@@ -2,12 +2,13 @@ package kz.moviedb.arch_components.ui
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kz.moviedb.arch_components.MyApplication
 import kz.moviedb.arch_components.apiUtils.ApiUtils
+import kz.moviedb.arch_components.db.CitationDataBase
 import kz.moviedb.arch_components.model.RoomCitation
 import kz.moviedb.arch_components.workManager.FORMAT
 import kz.moviedb.arch_components.workManager.METHOD
@@ -34,7 +35,7 @@ class CitationViewModel(application: Application) : AndroidViewModel(application
                     if (response.isSuccessful) {
                         response.body()?.let {
                             val citation = RoomCitation.convertToRoomEntity(it)
-                            (getApplication<MyApplication>()).dao.insertCitation(citation)
+                            CitationDataBase.getDB(getApplication()).citationDao().insertCitation(citation)
                         }
                     } else {
                         Log.e(TAG, "getList // else: ${response.message()}")

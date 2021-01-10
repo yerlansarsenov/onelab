@@ -3,11 +3,10 @@ package kz.moviedb.arch_components.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kz.moviedb.arch_components.MyApplication
 import kz.moviedb.arch_components.R
+import kz.moviedb.arch_components.db.CitationDataBase
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,12 +21,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                LinearLayoutManager.VERTICAL
-            )
+//            DividerItemDecoration(
+//                this,
+//                LinearLayoutManager.VERTICAL
+//            )
+            CustomDecoration()
         )
-        (applicationContext as MyApplication).dao.getAllCitationsLiveData().observe(this) { list ->
+        CitationDataBase.getDB(applicationContext).citationDao().getAllCitationsLiveData().observe(this) { list ->
             adapter.submitList(list)
         }
         //viewModel.getList()

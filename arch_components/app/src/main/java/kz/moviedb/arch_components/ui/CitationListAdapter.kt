@@ -36,5 +36,6 @@ class CitationDiffUtil: DiffUtil.ItemCallback<RoomCitation>() {
 class CitationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(item : RoomCitation) {
         itemView.findViewById<TextView>(R.id.citation_text).text = item.quoteText
+        itemView.findViewById<TextView>(R.id.citation_author).text = item.quoteAuthor
     }
 }

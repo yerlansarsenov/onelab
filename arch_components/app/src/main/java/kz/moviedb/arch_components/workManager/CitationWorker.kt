@@ -3,8 +3,8 @@ package kz.moviedb.arch_components.workManager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kz.moviedb.arch_components.MyApplication
 import kz.moviedb.arch_components.apiUtils.ApiUtils
+import kz.moviedb.arch_components.db.CitationDataBase
 import kz.moviedb.arch_components.model.RoomCitation
 
 /**
@@ -21,7 +21,7 @@ class CitationWorker(context: Context, params: WorkerParameters) : CoroutineWork
         if (response.isSuccessful) {
             response.body()?.let {
                 val citation = RoomCitation.convertToRoomEntity(it)
-                (applicationContext as MyApplication).dao.insertCitation(citation)
+                CitationDataBase.getDB(applicationContext).citationDao().insertCitation(citation)
             }
             Result.success()
         } else

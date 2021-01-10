@@ -17,29 +17,25 @@ import java.util.concurrent.TimeUnit
  */
 class MyApplication : Application() {
 
-    lateinit var citationDao: CitationDao
-
-    val dao: CitationDao
-        get() = citationDao
-
     override fun onCreate() {
         super.onCreate()
-        val db = Room.databaseBuilder(
-            applicationContext,
-            CitationDataBase::class.java, "citations"
-        ).build()
-        citationDao = db.citationDao()
         ProcessLifecycleOwner.get().lifecycle.addObserver(MyObserver(applicationContext))
         startCitationWorker()
     }
 
     private fun startCitationWorker() {
+        val manager = WorkManager.getInstance(applicationContext)
         val periodicWorkRequest = PeriodicWorkRequestBuilder<CitationWorker>(
             PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-            TimeUnit.SECONDS,
-            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MINUTES
+            TimeUnit.MINUTES,
+            PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+            TimeUnit.MINUTES
         ).addTag(CITATION_DOWNLOADING_WORK).build()
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+        val initWorkRequest = OneTimeWorkRequestBuilder<CitationWorker>().addTag(
+            CITATION_DOWNLOADING_WORK_INIT).build()
+        manager.beginUniqueWork(CITATION_DOWNLOADING_WORK_INIT,
+            ExistingWorkPolicy.KEEP, initWorkRequest).enqueue()
+        manager.enqueueUniquePeriodicWork(
             CITATION_DOWNLOADING_WORK, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         )
     }

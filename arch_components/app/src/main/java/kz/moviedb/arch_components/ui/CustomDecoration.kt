@@ -18,13 +18,13 @@ class CustomDecoration: RecyclerView.ItemDecoration() {
     private val blue: Paint by lazy { Paint() }
 
     init {
-        red.style = Paint.Style.STROKE
+        red.style = Paint.Style.FILL
         red.isAntiAlias = true
         red.color = Color.RED
-        green.style = Paint.Style.STROKE
+        green.style = Paint.Style.FILL
         green.isAntiAlias = true
         green.color = Color.GREEN
-        blue.style = Paint.Style.STROKE
+        blue.style = Paint.Style.FILL
         blue.isAntiAlias = true
         blue.color = Color.BLUE
     }
@@ -36,28 +36,15 @@ class CustomDecoration: RecyclerView.ItemDecoration() {
         val pixelOffSet = parent.context.resources.getDimensionPixelOffset(R.dimen.it_margin)
         val viewCount = parent.childCount
         for (i in 0 until viewCount) {
-            val child = parent.getChildAt(i)
+            val child: View = parent.getChildAt(i)
             val top = child.top - pixelOffSet/2
             val bottom = child.bottom + pixelOffSet/2
             val childAdapterPosition = parent.getChildAdapterPosition(child)
-            c.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), getPaint(childAdapterPosition))
+            val rect = Rect(left, top, right, bottom)
+            c.drawRect(rect, getPaint(childAdapterPosition))
         }
     }
 
-    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDrawOver(c, parent, state)
-        val pixelOffSet = parent.context.resources.getDimensionPixelOffset(R.dimen.it_margin)
-        val viewCount = parent.childCount
-        val right = parent.width / 2
-        val left = right - pixelOffSet*2
-        for (i in 0 until viewCount) {
-            val child = parent.getChildAt(i)
-            val top = child.top + pixelOffSet
-            val bottom = child.bottom - pixelOffSet
-            val childAdapterPosition = parent.getChildAdapterPosition(child)
-            c.drawRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat(), getPaintReversed(childAdapterPosition))
-        }
-    }
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -66,7 +53,7 @@ class CustomDecoration: RecyclerView.ItemDecoration() {
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        val pixelOffSet = parent.context.resources.getDimensionPixelOffset(R.dimen.it_margin)
+        val pixelOffSet: Int = parent.context.resources.getDimensionPixelOffset(R.dimen.it_margin)
         outRect.left = pixelOffSet
         outRect.right = pixelOffSet
         outRect.top = pixelOffSet / 2
