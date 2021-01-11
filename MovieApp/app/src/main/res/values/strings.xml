@@ -11,4 +11,5 @@
     <string name="actors">Actors</string>
     <string name="writers">Writers</string>
     <string name="hello">hello</string>
+    <string name="show_citations">Show citations</string>
 </resources>

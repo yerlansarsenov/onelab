@@ -30,7 +30,7 @@ class MoviesViewModel : ViewModel() {
     fun searchMoviesByName(name: String) {
         viewModelScope.launch {
             try {
-                val result = ApiUtils.api().getMovieBySearch(name).await()
+                val result = ApiUtils.api_Movie().getMovieBySearch(name).await()
                 withContext(Dispatchers.Main) {
                     _liveDataLoading.value = true
                     try {

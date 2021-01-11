@@ -31,7 +31,7 @@ class DetailViewModel : ViewModel() {
     fun searchMovieById(id: String) {
         viewModelScope.launch {
             try {
-                val result = ApiUtils.api().getMovieById(id).await()
+                val result = ApiUtils.api_Movie().getMovieById(id).await()
                 withContext(Dispatchers.Main) {
                     _liveDataLoading.value = true
                     try {
