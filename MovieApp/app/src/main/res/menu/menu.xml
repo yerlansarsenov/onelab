@@ -3,6 +3,7 @@
 
     <item android:id="@+id/citations"
         android:title="@string/show_citations"
+        android:icon="@mipmap/ic_launcher_foreground_round"
         />
 
 </menu>
