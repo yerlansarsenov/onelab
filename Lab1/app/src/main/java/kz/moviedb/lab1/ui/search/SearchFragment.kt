@@ -3,8 +3,11 @@ package kz.moviedb.lab1.ui.search
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -16,7 +19,9 @@ import kz.moviedb.lab1.model.Search
 import kz.moviedb.lab1.ui.error.ERROR_TEXT
 import kz.moviedb.lab1.ui.movies.LIST_OF_MOVIES
 import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import org.koin.android.ext.android.get
 
 /**
  * Created by Sarsenov Yerlan on 21.12.2020.
@@ -26,16 +31,15 @@ const val EMPTY_TEXT_ERROR = "Empty text ERROR!"
 
 class SearchFragment : MvpAppCompatFragment(), SearchView {
 
-    private val presenter by moxyPresenter { SearchPresenter() }
+    @InjectPresenter
+    lateinit var presenter: SearchPresenter
+
+    @ProvidePresenter
+    fun provide(): SearchPresenter = get()
 
     lateinit var navController: NavController
 
     var progressDialog: AlertDialog? = null
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

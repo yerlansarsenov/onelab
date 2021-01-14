@@ -1,14 +1,11 @@
 package kz.moviedb.lab1.ui.search
 
-import android.accounts.NetworkErrorException
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kz.moviedb.lab1.api.ApiUtils
-import kz.moviedb.lab1.model.SearchResponse
+import kz.moviedb.lab1.model.SealedResponse
+import kz.moviedb.lab1.model.SearchResponseState
+import kz.moviedb.lab1.repository.MovieRepositoryImpl
 import moxy.MvpPresenter
 import moxy.presenterScope
 
@@ -17,11 +14,16 @@ import moxy.presenterScope
  */
 
 //@InjectViewState
-class SearchPresenter: MvpPresenter<SearchView>() {
+class SearchPresenter(val repository: MovieRepositoryImpl) : MvpPresenter<SearchView>() {
 
-    var _liveDataSearchResponse = MutableLiveData<SearchResponse>()
-    val liveDataSearchResponse: LiveData<SearchResponse>
+    var _liveDataSearchResponse = MutableLiveData<SearchResponseState>()
+    val liveDataSearchResponse: LiveData<SearchResponseState>
         get() = _liveDataSearchResponse
+
+    /**
+     * i recognized that i dont need livedata here
+     *
+     */
 
     /*fun searchMoviesByName(name: String) {
         presenterScope.launch {
@@ -56,8 +58,18 @@ class SearchPresenter: MvpPresenter<SearchView>() {
 
     fun searchMoviesByName(name: String) {
         presenterScope.launch {
-            try {
-                val result = ApiUtils.api().getMovieBySearch(name).await()
+            when (val response = repository.getMovieBySearch(name)) {
+                is SealedResponse.ResponseSuccess -> {
+                    _liveDataSearchResponse.value = SearchResponseState.SearchResult(response.response)
+                    viewState.openMovies(response.response.Search)
+                }
+                is SealedResponse.ResponseError -> {
+                    _liveDataSearchResponse.value = SearchResponseState.Error(response.error)
+                    viewState.openError(response.error)
+                }
+            }
+            /*try {
+                //val result = ApiUtils.api().getMovieBySearch(name)//.await()
                 withContext(Dispatchers.Main) {
                     viewState.showLoading()
                     try {
@@ -86,7 +98,7 @@ class SearchPresenter: MvpPresenter<SearchView>() {
             } catch (e: Exception) {
                 Log.e(SearchPresenter::javaClass.name, "searchMoviesByName: ${e.message}")
                 viewState.openError("No internet connection")
-            }
+            }*/
         }
     }
 

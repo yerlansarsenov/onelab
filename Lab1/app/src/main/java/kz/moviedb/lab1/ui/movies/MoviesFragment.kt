@@ -20,7 +20,9 @@ import kz.moviedb.lab1.model.MovieResponse
 import kz.moviedb.lab1.model.Search
 import kz.moviedb.lab1.ui.detail.MOVIE_KEY
 import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import org.koin.android.ext.android.get
 
 /**
  * Created by Sarsenov Yerlan on 21.12.2020.
@@ -30,7 +32,11 @@ const val LIST_OF_MOVIES = "list_of_movies"
 @Suppress("DEPRECATION")
 class MoviesFragment : MvpAppCompatFragment(), MoviesView, MoviesAdapter.OnClickListener {
 
-    private val presenter by moxyPresenter { MoviesPresenter() }
+    @InjectPresenter
+    lateinit var presenter: MoviesPresenter
+
+    @ProvidePresenter
+    fun provide(): MoviesPresenter = get()
 
     //lateinit var listOfMovies: List<Search>
 

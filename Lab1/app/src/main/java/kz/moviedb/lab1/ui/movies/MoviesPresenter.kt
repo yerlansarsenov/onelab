@@ -1,13 +1,11 @@
 package kz.moviedb.lab1.ui.movies
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kz.moviedb.lab1.api.ApiUtils
-import kz.moviedb.lab1.model.MovieResponse
+import kz.moviedb.lab1.model.MovieResponseState
+import kz.moviedb.lab1.model.SealedResponse
+import kz.moviedb.lab1.repository.MovieRepositoryImpl
 import moxy.MvpPresenter
 import moxy.presenterScope
 
@@ -15,11 +13,16 @@ import moxy.presenterScope
  * Created by Sarsenov Yerlan on 21.12.2020.
  */
 
-class MoviesPresenter : MvpPresenter<MoviesView>() {
+class MoviesPresenter(val repository: MovieRepositoryImpl) : MvpPresenter<MoviesView>() {
 
-    var _liveDataMovie = MutableLiveData<MovieResponse>()
-    val liveDataMovie: LiveData<MovieResponse>
+    var _liveDataMovie = MutableLiveData<MovieResponseState>()
+    val liveDataMovie: LiveData<MovieResponseState>
         get() = _liveDataMovie
+
+    /**
+     * i recognized that i dont need livedata here
+     *
+     */
 
     /*fun searchMovieById(id: String) {
         presenterScope.launch {
@@ -45,7 +48,17 @@ class MoviesPresenter : MvpPresenter<MoviesView>() {
 
     fun searchMovieById(id: String) {
         presenterScope.launch {
-            try {
+            when (val response = repository.getMovieById(id)) {
+                is SealedResponse.ResponseSuccess -> {
+                    _liveDataMovie.value = MovieResponseState.SearchResult(response.response)
+                    viewState.openMovieDetail(response.response)
+                }
+                is SealedResponse.ResponseError -> {
+                    _liveDataMovie.value = MovieResponseState.Error(response.error)
+                    viewState.showError(response.error)
+                }
+            }
+            /*try {
                 val result = ApiUtils.api().getMovieById(id).await()
                 withContext(Dispatchers.Main) {
                     viewState.showLoading()
@@ -67,7 +80,7 @@ class MoviesPresenter : MvpPresenter<MoviesView>() {
             } catch (e: Exception) {
                 Log.e(MoviesPresenter::javaClass.name, "searchMovieById: ${e.message}")
                 e.message?.let { viewState.showError(it) }
-            }
+            }*/
         }
     }
 

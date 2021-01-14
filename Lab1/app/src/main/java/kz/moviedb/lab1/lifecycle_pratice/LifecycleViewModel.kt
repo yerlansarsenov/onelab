@@ -10,5 +10,4 @@ import androidx.lifecycle.ViewModel
 class LifecycleViewModel : ViewModel() {
 
     val liveData = MutableLiveData<String>()
-
 }
