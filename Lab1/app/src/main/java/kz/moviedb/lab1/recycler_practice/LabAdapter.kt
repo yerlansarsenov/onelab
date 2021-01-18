@@ -130,7 +130,7 @@ class LabViewHolderCheckBox(
     fun unbind() {
         val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
         checkBox.isChecked = false
-        checkBox.text = ""
+        checkBox.text = ""  // not necessary
     }
 }
 

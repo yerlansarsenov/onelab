@@ -30,4 +30,4 @@ data class MovieResponse(
     @SerializedName("imdbRating") val imdbRating: String,
     @SerializedName("imdbVotes") val imdbVotes: String,
     @SerializedName("Error") val Error: String
-): Serializable
+)

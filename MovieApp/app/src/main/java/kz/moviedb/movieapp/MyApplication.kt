@@ -28,10 +28,6 @@ class MyApplication : Application() {
             PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
             TimeUnit.MILLISECONDS
         ).addTag(CITATION_DOWNLOADING_WORK).build()
-        val initWorkRequest = OneTimeWorkRequestBuilder<CitationWorker>().addTag(
-            CITATION_DOWNLOADING_WORK_INIT).build()
-        manager.beginUniqueWork(CITATION_DOWNLOADING_WORK_INIT,
-            ExistingWorkPolicy.KEEP, initWorkRequest).enqueue()
         manager.enqueueUniquePeriodicWork(
             CITATION_DOWNLOADING_WORK, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         )

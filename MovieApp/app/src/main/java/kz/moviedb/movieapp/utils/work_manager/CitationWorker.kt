@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kz.moviedb.movieapp.api.ApiUtils
 import kz.moviedb.movieapp.db.CitationDataBase
-import kz.moviedb.movieapp.model.work_manager.RoomCitation
+import kz.moviedb.movieapp.model.BaseListItem
 
 /**
  * Created by Sarsenov Yerlan on 08.01.2021.
@@ -20,7 +20,7 @@ class CitationWorker(context: Context, params: WorkerParameters) : CoroutineWork
         val response = ApiUtils.api_Citation().getCitation(method = METHOD, format =  FORMAT)
         if (response.isSuccessful) {
             response.body()?.let {
-                val citation = RoomCitation.convertToRoomEntity(it)
+                val citation = BaseListItem.RoomCitation.convertToRoomEntity(it)
                 CitationDataBase.getDB(applicationContext).citationDao().insertCitation(citation)
             }
             Result.success()

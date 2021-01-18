@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.movieapp.R
+import kz.moviedb.movieapp.model.BaseListItem.ErrorResponse
 import kz.moviedb.movieapp.ui.BaseActivity
 import kz.moviedb.movieapp.ui.detail.DetailActivity
 import kz.moviedb.movieapp.ui.detail.MOVIE_ID
@@ -22,7 +23,7 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
 
     private val name by lazyArg<String>(LIST_OF_MOVIES)
 
-    lateinit var recyclerView: RecyclerView
+    private val recyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) }
 
     private val viewModel: MoviesViewModel by viewModels()
 
@@ -32,7 +33,6 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        recyclerView = findViewById(R.id.recycler_view)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(
@@ -52,11 +52,16 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
             else
                 hideLoading()
         }
-        viewModel.liveDataSearchResponse.observe(this) { response ->
-            if (response.Error !== null && response.Error.isNotEmpty())
-                showError(response.Error)
-            else
-                adapter.submitList(response.Search)
+        viewModel.liveDataBaseList.observe(this) { response ->
+//            if (response.error.isNotEmpty())
+//                showError(response.error)
+//            else
+//                adapter.submitList(response.search)
+            if (response[0] is ErrorResponse) {
+                showError((response[0] as ErrorResponse).message)
+            } else {
+                adapter.submitList(response)
+            }
         }
     }
 

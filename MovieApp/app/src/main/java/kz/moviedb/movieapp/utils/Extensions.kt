@@ -226,6 +226,10 @@ fun RatingBar.setImdbRating(rate: String) {
     }
 }
 
+/**
+ * check permission
+ */
+
 @RequiresApi(Build.VERSION_CODES.M)
 fun Context.checkPermission(permission: String) : Boolean {
     return this.checkSelfPermission(permission) == PERMISSION_GRANTED

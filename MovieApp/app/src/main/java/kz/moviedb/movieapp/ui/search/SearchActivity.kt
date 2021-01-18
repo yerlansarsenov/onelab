@@ -1,15 +1,12 @@
 package kz.moviedb.movieapp.ui.search
 
 import android.os.Bundle
-import android.view.*
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import kz.moviedb.movieapp.R
 import kz.moviedb.movieapp.ui.movies.LIST_OF_MOVIES
 import kz.moviedb.movieapp.ui.movies.MoviesActivity
-import kz.moviedb.movieapp.ui.work_manager_ui.MainActivity
 import kz.moviedb.movieapp.utils.hideKeyboard
 import kz.moviedb.movieapp.utils.intentFor
 import kz.moviedb.movieapp.utils.showToast
@@ -40,20 +37,20 @@ class SearchActivity : AppCompatActivity(R.layout.ac_search) {
         startActivity(intent)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.citations -> {
-                val intent = intentFor<MainActivity>()
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.citations -> {
+//                val intent = intentFor<MainActivity>()
+//                startActivity(intent)
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 }

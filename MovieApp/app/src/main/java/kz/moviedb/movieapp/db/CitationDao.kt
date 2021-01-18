@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kz.moviedb.movieapp.model.work_manager.RoomCitation
+import kz.moviedb.movieapp.model.BaseListItem
 
 /**
  * Created by Sarsenov Yerlan on 09.01.2021.
@@ -13,14 +13,14 @@ import kz.moviedb.movieapp.model.work_manager.RoomCitation
 @Dao
 interface CitationDao {
     @Query("select * from citations_table")
-    suspend fun getAllCitations() : List<RoomCitation>
+    suspend fun getAllCitations() : List<BaseListItem.RoomCitation>
 
     @Query("select * from citations_table")
-    fun getAllCitationsLiveData() : LiveData<List<RoomCitation>>
+    fun getAllCitationsLiveData() : LiveData<List<BaseListItem.RoomCitation>>
 
     @Query("select * from citations_table where id = (:mId)")
-    suspend fun getCitationById(mId: Int) : RoomCitation
+    suspend fun getCitationById(mId: Int) : BaseListItem.RoomCitation
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCitation(vararg citations: RoomCitation)
+    suspend fun insertCitation(vararg citations: BaseListItem.RoomCitation)
 }
