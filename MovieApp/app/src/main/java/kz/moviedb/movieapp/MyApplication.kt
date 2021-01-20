@@ -24,13 +24,15 @@ class MyApplication : Application() {
         startKoin {
             androidLogger(level = Level.DEBUG)
             androidContext(applicationContext)
-            modules(listOf(
-                retrofitCitationModule,
-                retrofitMovieModule,
-                databaseModule,
-                repositoryModule,
-                viewModelModule
-            ))
+            modules(
+                listOf(
+                    retrofitCitationModule,
+                    retrofitMovieModule,
+                    databaseModule,
+                    repositoryModule,
+                    viewModelModule
+                )
+            )
         }
         ProcessLifecycleOwner.get().lifecycle.addObserver(MyObserver(applicationContext))
         startCitationWorker()
