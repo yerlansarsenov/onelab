@@ -11,8 +11,6 @@ import androidx.work.WorkManager
  */
 const val CITATION_DOWNLOADING_WORK = "CITATION_DOWNLOADING_WORK"
 
-const val CITATION_DOWNLOADING_WORK_INIT = "CITATION_DOWNLOADING_WORK_INIT"
-
 class MyObserver(private val context: Context) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

@@ -7,6 +7,7 @@ import kz.moviedb.movieapp.api.MovieApi
 import kz.moviedb.movieapp.api.wrok_manager.CitationApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +19,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 const val MOVIES_URL = "http://www.omdbapi.com"
 const val CITATION_URL = "https://api.forismatic.com/api/"
 
-val retrofitCitationModule = module(override = true) {
+private const val CITATION_CLIENT = "CitationClient"
+
+private const val CITATION_RETROFIT = "CitationRetrofit"
+
+val retrofitCitationModule = module {
 
     fun clientCitation() : OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
@@ -38,12 +43,16 @@ val retrofitCitationModule = module(override = true) {
 
     fun apiCitation(retrofit: Retrofit): CitationApi = retrofit.create(CitationApi::class.java)
 
-    single { clientCitation() }
-    single { retrofitCitation(get()) }
-    single { apiCitation(get()) }
+    single(named(CITATION_CLIENT)) { clientCitation() }
+    single(named(CITATION_RETROFIT)) { retrofitCitation(get(named(CITATION_CLIENT))) }
+    single { apiCitation(get(named(CITATION_RETROFIT))) }
 }
 
-val retrofitMovieModule = module(override = true) {
+private const val MOVIE_CLIENT = "MovieClient"
+
+private const val MOVIE_RETROFIT = "MovieRetrofit"
+
+val retrofitMovieModule = module {
     fun clientMovie() : OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
         val interceptor = ApiKeyInterceptor()
@@ -65,9 +74,9 @@ val retrofitMovieModule = module(override = true) {
 
     fun apiMovie(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
 
-    single { clientMovie() }
-    single { retrofitMovie(get()) }
-    single { apiMovie(get()) }
+    single(named(MOVIE_CLIENT)) { clientMovie() }
+    single(named(MOVIE_RETROFIT)) { retrofitMovie(get(named(MOVIE_CLIENT))) }
+    single { apiMovie(get(named(MOVIE_RETROFIT))) }
 }
 
 
