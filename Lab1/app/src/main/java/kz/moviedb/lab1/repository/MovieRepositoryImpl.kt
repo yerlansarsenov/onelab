@@ -6,39 +6,43 @@ import kz.moviedb.lab1.model.MovieResponse
 import kz.moviedb.lab1.model.SealedResponse
 import kz.moviedb.lab1.model.SearchResponse
 
-private val RESPONSE_TRUE_VALUE = "True"
+private const val RESPONSE_TRUE_VALUE = "True"
 
 /**
  * Created by Sarsenov Yerlan on 13.01.2021.
  */
 class MovieRepositoryImpl(val api: MovieAPI) : MovieRepository {
-    override suspend fun getMovieBySearch(text: String): SealedResponse<SearchResponse> = try {
+    override suspend fun getMovieBySearch(text: String): SealedResponse<SearchResponse> {
+        try {
             val response = api.getMovieBySearch(text)
             if (response.isSuccessful) {
                 if (response.body()?.Response == RESPONSE_TRUE_VALUE) {
-                    SealedResponse.ResponseSuccess(response.body()!!)
+                    return SealedResponse.ResponseSuccess(response.body()!!)
                 }
-                SealedResponse.ResponseError(response.body()!!.Error)
+                return SealedResponse.ResponseError(response.body()!!.Error)
             } else {
-                SealedResponse.ResponseError(response.message())
+                return SealedResponse.ResponseError(response.message())
             }
         } catch (e: Exception) {
-            SealedResponse.ResponseError(e.message.toString())
+            return SealedResponse.ResponseError(e.message.toString())
         }
+    }
 
 
-    override suspend fun getMovieById(id: String): SealedResponse<MovieResponse> = try {
-        val response = api.getMovieById(id)
-        if (response.isSuccessful) {
-            if (response.body()?.Response == RESPONSE_TRUE_VALUE) {
-                SealedResponse.ResponseSuccess(response.body()!!)
+    override suspend fun getMovieById(id: String): SealedResponse<MovieResponse> {
+        try {
+            val response = api.getMovieById(id)
+            if (response.isSuccessful) {
+                if (response.body()?.Response == RESPONSE_TRUE_VALUE) {
+                    return SealedResponse.ResponseSuccess(response.body()!!)
+                }
+                return SealedResponse.ResponseError(response.body()!!.Error)
+            } else {
+                return SealedResponse.ResponseError(response.message())
             }
-            SealedResponse.ResponseError(response.body()!!.Error)
-        } else {
-            SealedResponse.ResponseError(response.message())
+        } catch (e: Exception) {
+            return SealedResponse.ResponseError(e.message.toString())
         }
-    } catch (e: Exception) {
-        SealedResponse.ResponseError(e.message.toString())
     }
 
 }

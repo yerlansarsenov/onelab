@@ -1,7 +1,6 @@
 package kz.moviedb.movieapp.ui.movies
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +11,7 @@ import kz.moviedb.movieapp.ui.detail.DetailActivity
 import kz.moviedb.movieapp.ui.detail.MOVIE_ID
 import kz.moviedb.movieapp.utils.intentFor
 import kz.moviedb.movieapp.utils.lazyArg
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
@@ -25,7 +25,7 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
 
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) }
 
-    private val viewModel: MoviesViewModel by viewModels()
+    private val viewModel: MoviesViewModel by viewModel()
 
     private val adapter: MoviesAdapter by lazy {
         MoviesAdapter(::listenOnItemClick)

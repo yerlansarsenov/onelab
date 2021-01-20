@@ -1,21 +1,19 @@
 package kz.moviedb.movieapp.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kz.moviedb.movieapp.api.ApiUtils
+import kz.moviedb.movieapp.model.Either
 import kz.moviedb.movieapp.model.MovieResponse
+import kz.moviedb.movieapp.repository.MovieRepository
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
  */
-class DetailViewModel : ViewModel() {
+class DetailViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private val _livaDdataMovie = MutableLiveData<MovieResponse>()
     val liveDataMovie: LiveData<MovieResponse>
@@ -30,23 +28,16 @@ class DetailViewModel : ViewModel() {
 
     fun searchMovieById(id: String) {
         viewModelScope.launch {
-            try {
-                val result = ApiUtils.api_Movie().getMovieById(id).await()
-                withContext(Dispatchers.Main) {
-                    _liveDataLoading.value = true
-                    try {
-                        _livaDdataMovie.value = result
-                    } catch (e: Exception) {
-                        Log.e("ViewModel", "searchMovieById: ${e.message}")
-                        _liveDataHasInternetProblems.value = true
-                    } finally {
-                        _liveDataLoading.value = false
-                    }
+            _liveDataLoading.value = true
+            when (val result = repository.getMovieById(id)) {
+                is Either.Success -> {
+                    _livaDdataMovie.value = result.response
                 }
-            } catch (e: Exception) {
-                Log.e("ViewModel", "searchMovieById: ${e.message}")
-                _liveDataHasInternetProblems.value = true
+                is Either.Error -> {
+                    _liveDataHasInternetProblems.value = true
+                }
             }
+            _liveDataLoading.value = false
         }
     }
 

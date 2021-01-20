@@ -1,28 +1,28 @@
 package kz.moviedb.movieapp.ui.movies
 
-import android.accounts.NetworkErrorException
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
-import kz.moviedb.movieapp.api.ApiUtils
-import kz.moviedb.movieapp.db.CitationDataBase
 import kz.moviedb.movieapp.model.BaseListItem
 import kz.moviedb.movieapp.model.BaseListItem.ErrorResponse
-import kz.moviedb.movieapp.model.BaseListItem.Search
-import kz.moviedb.movieapp.model.BaseListItem.RoomCitation
+import kz.moviedb.movieapp.model.Either
+import kz.moviedb.movieapp.repository.CitationRepository
+import kz.moviedb.movieapp.repository.MovieRepository
+import org.koin.java.KoinJavaComponent.inject
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
  */
 private const val TAG = "MoviesViewModel"
 
-class MoviesViewModel(application: Application) : AndroidViewModel(application) {
+class MoviesViewModel(application: Application, private val repository: MovieRepository) : AndroidViewModel(application) {
     private var _liveDataLoading = MutableLiveData<Boolean>(false)
     val liveDataLoading: LiveData<Boolean>
         get() = _liveDataLoading
@@ -33,6 +33,7 @@ class MoviesViewModel(application: Application) : AndroidViewModel(application) 
     val liveDataBaseList: LiveData<List<BaseListItem>>
         get() = _liveDataBaseList
 
+    private val citationRepositoryImpl by inject(CitationRepository::class.java)
 
     init {
         viewModelScope.launch { initCitations() }
@@ -40,7 +41,7 @@ class MoviesViewModel(application: Application) : AndroidViewModel(application) 
 
     private suspend fun initCitations() {
         Mutex().withLock {
-            val list = CitationDataBase.getDB(getApplication()).citationDao().getAllCitations()
+            val list = citationRepositoryImpl.getAllCitationFromDatabase()
             if (list.isNotEmpty()) {
                 _liveDataBaseList.value = list
             }
@@ -50,35 +51,21 @@ class MoviesViewModel(application: Application) : AndroidViewModel(application) 
 
     fun searchMoviesByName(name: String) {
         viewModelScope.launch {
-            try {
-                val result = ApiUtils.api_Movie().getMovieBySearch(name).await()
-                withContext(Dispatchers.Main) {
-                    _liveDataLoading.value = true
-                    try {
-                        if (result.error.isNullOrEmpty()) {
-                            if (!_liveDataBaseList.value.isNullOrEmpty()) {
-                                _liveDataBaseList.value = _liveDataBaseList.value!!.plus(result.search)
-                                Log.e(TAG, "searchMoviesByName: so, the list size is ${_liveDataBaseList.value!!.size}")
-                            } else {
-                                _liveDataBaseList.value = result.search
-                            }
-                        } else {
-                            val errorMessage = listOf(ErrorResponse(result.error))
-                            _liveDataBaseList.value = errorMessage
-                        }
-                    } catch (e: NetworkErrorException) {
-                        _liveDataHasInternetProblems.value = true
-                        Log.e(TAG, "searchMoviesByName: catch1 ${e.message}")
-                    } catch (e: Exception) {
-                        Log.e(TAG, "searchMoviesByName: catch2 ${e.message}")
-                    } finally {
-                        _liveDataLoading.value = false
+            _liveDataLoading.value = true
+            when (val result = repository.getMovieBySearch(name)) {
+                is Either.Success -> {
+                    if (!_liveDataBaseList.value.isNullOrEmpty()) {
+                        _liveDataBaseList.value = _liveDataBaseList.value!!.plus(result.response.search)
+                    } else {
+                        _liveDataBaseList.value = result.response.search
                     }
                 }
-            } catch (e: Exception) {
-                _liveDataHasInternetProblems.value = true
-                Log.e(TAG, "searchMoviesByName: catch3 ${e.message}")
+                is Either.Error -> {
+                    val errorMessage = listOf(ErrorResponse(result.error))
+                    _liveDataBaseList.value = errorMessage
+                }
             }
+            _liveDataLoading.value = false
         }
     }
 

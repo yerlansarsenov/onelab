@@ -12,18 +12,4 @@ import kz.moviedb.movieapp.model.BaseListItem
 @Database(entities = [BaseListItem.RoomCitation::class], version = 1)
 abstract class CitationDataBase : RoomDatabase() {
     abstract fun citationDao() : CitationDao
-
-    companion object {
-        private var INSTANCE: CitationDataBase? = null
-
-        fun getDB(context: Context): CitationDataBase {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(
-                    context,
-                    CitationDataBase::class.java, "citations"
-                ).build()
-            }
-            return INSTANCE as CitationDataBase
-        }
-    }
 }
