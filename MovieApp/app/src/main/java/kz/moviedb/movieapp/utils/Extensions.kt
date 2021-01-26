@@ -128,7 +128,9 @@ fun View.hideKeyboard() {
     inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun <T: Fragment> T.progressDialog() : AlertDialog? {
+private const val LOADING_TEXT = "Loading..."
+
+fun <T: Fragment> T.showProcessLoading() : AlertDialog? {
     val padding = 30
     var linearLayout : LinearLayout? = LinearLayout(activity)
     linearLayout?.orientation = LinearLayout.HORIZONTAL
@@ -151,7 +153,7 @@ fun <T: Fragment> T.progressDialog() : AlertDialog? {
     llParam.gravity = Gravity.CENTER
 
     var textView : TextView? = TextView(activity)
-    textView?.text = "Loading..."
+    textView?.text = LOADING_TEXT
     textView?.setTextColor(Color.parseColor("#000000"))
     textView?.textSize = 20F
     textView?.layoutParams = llParam
@@ -166,41 +168,53 @@ fun <T: Fragment> T.progressDialog() : AlertDialog? {
     return builder.create()
 }
 
-fun <T: Activity> T.progressDialog() : AlertDialog? {
+fun <T: Activity> T.showProcessLoading() : AlertDialog? {
     val padding = 30
-    var linearLayout : LinearLayout? = LinearLayout(this)
-    linearLayout?.orientation = LinearLayout.HORIZONTAL
-    linearLayout?.setPadding(padding, padding, padding, padding)
-    linearLayout?.gravity = Gravity.CENTER
+    val linearLayout : LinearLayout = LinearLayout(this)
+    linearLayout.orientation = LinearLayout.HORIZONTAL
+    linearLayout.setPadding(padding, padding, padding, padding)
+    linearLayout.gravity = Gravity.CENTER
     var llParam = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
         LinearLayout.LayoutParams.WRAP_CONTENT)
     llParam.gravity = Gravity.CENTER
-    linearLayout?.layoutParams = llParam
+    linearLayout.layoutParams = llParam
 
-    var progressBar : ProgressBar? = ProgressBar(this)
-    progressBar?.isIndeterminate = true
-    progressBar?.setPadding(0, 0, padding, 0)
-    progressBar?.layoutParams = llParam
+    val progressBar : ProgressBar = ProgressBar(this)
+    progressBar.isIndeterminate = true
+    progressBar.setPadding(0, 0, padding, 0)
+    progressBar.layoutParams = llParam
 
     llParam = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT,
         ViewGroup.LayoutParams.WRAP_CONTENT)
     llParam.gravity = Gravity.CENTER
 
-    var textView : TextView? = TextView(this)
-    textView?.text = "Loading..."
-    textView?.setTextColor(Color.parseColor("#000000"))
-    textView?.textSize = 20F
-    textView?.layoutParams = llParam
+    val textView : TextView = TextView(this)
+    textView.text = LOADING_TEXT
+    textView.setTextColor(Color.parseColor("#000000"))
+    textView.textSize = 20F
+    textView.layoutParams = llParam
 
-    linearLayout?.addView(progressBar)
-    linearLayout?.addView(textView)
+    linearLayout.addView(progressBar)
+    linearLayout.addView(textView)
 
     val builder = AlertDialog.Builder(this)
     builder.setCancelable(false)
     builder.setView(linearLayout)
 
+    return builder.create()
+}
+
+fun Activity.showMatrixLoading(): AlertDialog? {
+    val matrixView: CustomMatrixView = CustomMatrixView(this)
+    val padding = 30
+    matrixView.setPadding(padding, padding, padding, padding)
+    matrixView.alpha = 0.7F
+
+    val builder = AlertDialog.Builder(this)
+    builder.setCancelable(false)
+    builder.setView(matrixView)
     return builder.create()
 }
 

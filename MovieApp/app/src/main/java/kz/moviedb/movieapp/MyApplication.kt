@@ -5,7 +5,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.*
 import kz.moviedb.movieapp.moduls.*
 import kz.moviedb.movieapp.utils.work_manager.CITATION_DOWNLOADING_WORK
-import kz.moviedb.movieapp.utils.work_manager.CITATION_DOWNLOADING_WORK_INIT
 import kz.moviedb.movieapp.utils.work_manager.CitationWorker
 import kz.moviedb.movieapp.utils.work_manager.MyObserver
 import org.koin.android.ext.koin.androidContext

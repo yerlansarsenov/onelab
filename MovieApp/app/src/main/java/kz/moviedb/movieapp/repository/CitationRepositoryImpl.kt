@@ -17,6 +17,7 @@ class CitationRepositoryImpl(private val api: CitationApi, private val dataBase:
             if (response.isSuccessful) {
                 response.body()?.let {
                     val citation = BaseListItem.RoomCitation.convertToRoomEntity(it)
+                    dataBase.citationDao().deleteCitations()
                     dataBase.citationDao().insertCitation(citation)
                 }
                 ListenableWorker.Result.success()

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kz.moviedb.movieapp.R
 import kz.moviedb.movieapp.ui.movies.MoviesActivity
-import kz.moviedb.movieapp.utils.progressDialog
+import kz.moviedb.movieapp.utils.showMatrixLoading
 
 /**
  * Created by Sarsenov Yerlan on 07.01.2021.
@@ -18,7 +18,7 @@ abstract class BaseActivity(resId: Int) : AppCompatActivity(resId) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        progressDialog = progressDialog()
+        progressDialog = showMatrixLoading()//showProcessLoading()
     }
 
     override fun onDestroy() {

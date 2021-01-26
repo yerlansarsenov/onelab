@@ -23,4 +23,7 @@ interface CitationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCitation(vararg citations: BaseListItem.RoomCitation)
+
+    @Query("delete from citations_table where 1=1")
+    suspend fun deleteCitations()
 }
