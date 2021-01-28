@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 val viewModelModule = module {
     viewModel {
         MoviesViewModel(
-            application = get(),
             searchUseCase = get(),
             citationUseCase = get()
         )

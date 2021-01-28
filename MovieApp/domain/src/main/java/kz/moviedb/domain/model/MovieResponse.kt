@@ -2,7 +2,7 @@ package kz.moviedb.domain.model
 
 
 data class MovieResponse(
-    val actors: String,
+    val actors: List<String>,
     val awards: String,
     val boxOffice: String,
     val country: String,
@@ -22,7 +22,7 @@ data class MovieResponse(
     val title: String,
     val type: String,
     val website: String,
-    val writer: String,
+    val writer: List<String>,
     val year: String,
     val imdbID: String,
     val imdbRating: String,

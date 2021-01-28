@@ -28,6 +28,7 @@ class MyApplication : Application() {
             modules(
                 listOf(
                     mapperModule,
+                    mapperModuleUI,
                     retrofitCitationModule,
                     retrofitMovieModule,
                     databaseModule,

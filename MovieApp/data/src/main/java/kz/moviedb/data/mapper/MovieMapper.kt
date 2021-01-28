@@ -1,5 +1,6 @@
 package kz.moviedb.data.mapper
 
+import android.widget.TextView
 import kz.moviedb.data.model.MovieResponseData
 import kz.moviedb.data.model.RatingData
 import kz.moviedb.domain.mapper.Mapper
@@ -11,8 +12,16 @@ import kz.moviedb.domain.model.Rating
  */
 class MovieMapper(private val ratingMapper: RatingMapper) : Mapper<MovieResponse, MovieResponseData> {
     override fun convert(model: MovieResponse): MovieResponseData {
+        var writersText = ""
+        for (w in model.writer) {
+            writersText = "${writersText}$w\n"
+        }
+        var actorsText = ""
+        for (w in model.actors) {
+            actorsText = "${actorsText}$w\n"
+        }
         return MovieResponseData(
-            actors = model.actors,
+            actors = actorsText,
             awards = model.awards,
             boxOffice = model.boxOffice,
             country = model.country,
@@ -32,7 +41,7 @@ class MovieMapper(private val ratingMapper: RatingMapper) : Mapper<MovieResponse
             title = model.title,
             type = model.type,
             website = model.website,
-            writer = model.writer,
+            writer = writersText,
             year = model.year,
             imdbID = model.imdbID,
             imdbRating = model.imdbRating,
@@ -42,8 +51,10 @@ class MovieMapper(private val ratingMapper: RatingMapper) : Mapper<MovieResponse
     }
 
     override fun invert(model: MovieResponseData): MovieResponse {
+        val writers = model.writer.split(',')
+        val actors = model.actors.split(',')
         return MovieResponse(
-            actors = model.actors,
+            actors = actors,
             awards = model.awards,
             boxOffice = model.boxOffice,
             country = model.country,
@@ -63,7 +74,7 @@ class MovieMapper(private val ratingMapper: RatingMapper) : Mapper<MovieResponse
             title = model.title,
             type = model.type,
             website = model.website,
-            writer = model.writer,
+            writer = writers,
             year = model.year,
             imdbID = model.imdbID,
             imdbRating = model.imdbRating,

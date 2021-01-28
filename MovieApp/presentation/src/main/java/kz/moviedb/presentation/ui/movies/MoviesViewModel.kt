@@ -2,10 +2,7 @@ package kz.moviedb.presentation.ui.movies
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -22,10 +19,9 @@ import kz.moviedb.presentation.model.SearchState
 private const val TAG = "MoviesViewModel"
 
 class MoviesViewModel(
-    application: Application,
     private val searchUseCase: SearchUseCase,
     private val citationUseCase: CitationUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _liveDataState = MutableLiveData<SearchState>()
     val liveDataState: LiveData<SearchState>
