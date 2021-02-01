@@ -1,13 +1,10 @@
 package kz.moviedb.presentation.utils
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.View
-import android.widget.FrameLayout
 import androidx.cardview.widget.CardView
 
 /**
@@ -35,7 +32,7 @@ class CustomRatingView : CardView {
     }
 
 
-    fun init() {
+    private fun init() {
         paintRate.style = Paint.Style.FILL
         paintRate.color = Color.YELLOW
 
@@ -59,6 +56,5 @@ class CustomRatingView : CardView {
         canvas?.drawRect(0F, 0F, width.toFloat(), height.toFloat(), paintBg)
         canvas?.drawRect(0F, 0F, rateWidth.toFloat(), height.toFloat(), paintRate)
         canvas?.drawText(text, (width/2.5).toFloat(), (height/2).toFloat(), paintText)
-        invalidate()
     }
 }

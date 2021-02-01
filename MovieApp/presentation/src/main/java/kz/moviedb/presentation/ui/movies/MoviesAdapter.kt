@@ -28,7 +28,6 @@ class MoviesAdapter(
         when (currentList[position]) {
             is BaseListItem.Search -> (holder as MoviesHolder).bind(currentList[position] as BaseListItem.Search, listener)
             is BaseListItem.RoomCitation -> (holder as CitationViewHolder).bind(currentList[position] as BaseListItem.RoomCitation)
-            is BaseListItem.ErrorResponse -> { /* do nothing */ }
         }
     }
 
@@ -36,7 +35,6 @@ class MoviesAdapter(
         when (currentList[position]) {
             is BaseListItem.Search -> R.layout.it_movie
             is BaseListItem.RoomCitation -> R.layout.it_citation
-            else -> -1
         }
 }
 

@@ -1,12 +1,11 @@
 package kz.moviedb.presentation.utils
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import kz.moviedb.presentation.R
 import java.util.*
 
 /**
@@ -23,7 +22,7 @@ class CustomMatrixView : View {
     lateinit var canvasBitmap: Bitmap
     private var fontSize = 40
     private var columnSize = 0
-    private var chars = "+-*/!^'([])#@&?,=$€°|%0123456789".toCharArray()
+    private var chars = "0123456789".toCharArray()
     lateinit var txtPosByColumn: Array<Int>
     private var paintTxt = Paint()
     private var paintBg = Paint()
@@ -34,7 +33,7 @@ class CustomMatrixView : View {
         paintTxt.style = Paint.Style.FILL
         paintTxt.color = Color.GREEN
         paintTxt.textSize = fontSize.toFloat()
-
+        paintTxt.typeface = ResourcesCompat.getFont(context, R.font.pt_mono)
         paintBg.style = Paint.Style.FILL
         paintBg.color = Color.BLACK
         paintBg.alpha = 5
@@ -69,7 +68,8 @@ class CustomMatrixView : View {
 
     private fun drawText() {
         for (i in txtPosByColumn.indices) {
-            canvas.drawText("" + chars[RANDOM.nextInt(chars.size)], (i * fontSize).toFloat(), (txtPosByColumn[i] * fontSize).toFloat(), paintTxt)
+            canvas.drawText("" + chars[RANDOM.nextInt(chars.size)],
+                (i * fontSize).toFloat(), (txtPosByColumn[i] * fontSize).toFloat(), paintTxt)
             if (txtPosByColumn[i] * fontSize > myHeight && Math.random() > 0.975)
                 txtPosByColumn[i] = 0
             txtPosByColumn[i]++

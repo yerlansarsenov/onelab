@@ -13,11 +13,11 @@ private const val CITATION_DB = "citations"
  */
 
 val databaseModule = module {
-    fun getDB(context: Context): CitationDao {
+    fun getDatabaseDao(context: Context): CitationDao {
         return Room.databaseBuilder(
                 context,
                 CitationDataBase::class.java, CITATION_DB
         ).build().citationDao()
     }
-    single { getDB(get()) }
+    single { getDatabaseDao(get()) }
 }

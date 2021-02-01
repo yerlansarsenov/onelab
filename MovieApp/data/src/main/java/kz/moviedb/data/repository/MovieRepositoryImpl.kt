@@ -21,7 +21,7 @@ private const val TAG = "MovieRepositoryImpl"
 
 
 class MovieRepositoryImpl(
-    val api: MovieApi,
+    private val api: MovieApi,
     private val mapperSearch: SearchMapper,
     private val mapperMovie: MovieMapper
     ) : MovieRepository {
@@ -33,7 +33,7 @@ class MovieRepositoryImpl(
                     return Either.Error(response.message())
                 if (response.body()!!.response == RESPONSE_TRUE_VALUE) {
                     val list = response.body()!!.search.map {
-                        mapperSearch.invert(it)
+                        mapperSearch.convert(it)
                     }
                     return Either.Success(list)
                 }
@@ -56,7 +56,7 @@ class MovieRepositoryImpl(
                     return Either.Error(response.message())
                 if (response.body() != null && response.body()!!.response == RESPONSE_TRUE_VALUE) {
                     Log.e(TAG, "getMovieById: ${response.body()!!.title}")
-                    return Either.Success(mapperMovie.invert(response.body()!!))
+                    return Either.Success(mapperMovie.convert(response.body()!!))
                 }
                 // response have error message if response != "True"
                 return Either.Error(response.body()!!.error!!)

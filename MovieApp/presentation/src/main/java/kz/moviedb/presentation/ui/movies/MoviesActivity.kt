@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kz.moviedb.presentation.R
+import kz.moviedb.presentation.model.LoadingState
 import kz.moviedb.presentation.model.SearchState
 import kz.moviedb.presentation.ui.BaseActivity
 import kz.moviedb.presentation.ui.detail.DetailActivity
@@ -44,18 +45,23 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
         viewModel.searchMoviesByName(name)
         viewModel.liveDataState.observe(this) { state ->
             when (state) {
-                is SearchState.ShowLoading -> {
-                    showLoading()
-                }
                 is SearchState.ResponseList -> {
                     adapter.submitList(state.list)
                 }
                 is SearchState.Error -> {
                     showError(state.message)
                 }
-                is SearchState.HideLoading -> {
+            }
+        }
+        viewModel.liveDataLoadingState.observe(this) { state ->
+            when (state) {
+                LoadingState.ShowLoading -> {
+                    showLoading()
+                }
+                LoadingState.HideLoading -> {
                     hideLoading()
                 }
+                null -> {}
             }
         }
     }

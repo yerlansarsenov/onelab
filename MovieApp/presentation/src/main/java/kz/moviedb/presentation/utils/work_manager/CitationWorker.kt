@@ -12,7 +12,7 @@ class CitationWorker(context: Context, params: WorkerParameters) : CoroutineWork
     private val citationUseCase: CitationUseCase by inject(CitationUseCase::class.java)
 
     override suspend fun doWork(): Result {
-        return when (val citation = citationUseCase.getCitationFromInternet()) {
+        return when (citationUseCase.getCitationFromInternet()) {
             is Either.Success -> {
                 Result.success()
             }

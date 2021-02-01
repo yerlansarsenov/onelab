@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kz.moviedb.domain.model.Either
 import kz.moviedb.domain.usecase.MovieResponseUseCase
+import kz.moviedb.presentation.model.LoadingState
 import kz.moviedb.presentation.model.MovieState
 
 /**
@@ -19,10 +19,16 @@ class DetailViewModel(private val useCase: MovieResponseUseCase) : ViewModel() {
     val liveDataMovie: LiveData<MovieState>
         get() = _livaDataMovie
 
+    private val _liveDataLoadingState = MutableLiveData<LoadingState>()
+    val liveDataLoadingState: LiveData<LoadingState>
+        get() = _liveDataLoadingState
+
 
     fun searchMovieById(id: String) {
+        if (_livaDataMovie.value != null && _liveDataLoadingState.value != null)
+            return
         viewModelScope.launch {
-            _livaDataMovie.value = MovieState.ShowLoading
+            _liveDataLoadingState.value = LoadingState.ShowLoading
             when (val result = useCase.getMovieById(id)) {
                 is Either.Success -> {
                     _livaDataMovie.value = MovieState.Response(result.response)
@@ -31,13 +37,13 @@ class DetailViewModel(private val useCase: MovieResponseUseCase) : ViewModel() {
                     _livaDataMovie.value = MovieState.Error(result.error)
                 }
             }
-            _livaDataMovie.value = MovieState.HideLoading
+            _liveDataLoadingState.value = LoadingState.HideLoading
         }
     }
 
-    override fun onCleared() {
-        viewModelScope.cancel()
-        super.onCleared()
-    }
+//    override fun onCleared() {
+//        viewModelScope.cancel()
+//        super.onCleared()
+//    }
 
 }

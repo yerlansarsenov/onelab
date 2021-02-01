@@ -7,14 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kz.moviedb.domain.model.Rating
 import kz.moviedb.presentation.R
-import kz.moviedb.presentation.model.RatingWithValue
 import kz.moviedb.presentation.utils.CustomRatingView
 
 /**
  * Created by Sarsenov Yerlan on 28.01.2021.
  */
-class RatingAdapter : ListAdapter<RatingWithValue, RatingViewHolder>(RatingDiffUtils()) {
+class RatingAdapter : ListAdapter<Rating, RatingViewHolder>(RatingDiffUtils()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.it_rating, parent, false)
         return RatingViewHolder(view)
@@ -27,19 +27,19 @@ class RatingAdapter : ListAdapter<RatingWithValue, RatingViewHolder>(RatingDiffU
 }
 
 class RatingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    fun bind(item: RatingWithValue) {
+    fun bind(item: Rating) {
 //        itemView.findViewById<TextView>(R.id.view_rating).text = item.value.toString()
         itemView.findViewById<CustomRatingView>(R.id.view_rating).rate = item.value
         itemView.findViewById<TextView>(R.id.name_rating).text = item.source
     }
 }
 
-class RatingDiffUtils: DiffUtil.ItemCallback<RatingWithValue>() {
-    override fun areItemsTheSame(oldItem: RatingWithValue, newItem: RatingWithValue): Boolean {
+class RatingDiffUtils: DiffUtil.ItemCallback<Rating>() {
+    override fun areItemsTheSame(oldItem: Rating, newItem: Rating): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: RatingWithValue, newItem: RatingWithValue): Boolean {
+    override fun areContentsTheSame(oldItem: Rating, newItem: Rating): Boolean {
         return oldItem.source == newItem.source
     }
 

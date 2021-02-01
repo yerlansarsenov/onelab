@@ -26,9 +26,8 @@ sealed class BaseListItem {
     data class Search(
         val poster: String,
         val title: String,
-        val type: String,
-        val year: String,
+//        val type: String,
+//        val year: String,
         val imdbID: String
     ): BaseListItem()
-    data class ErrorResponse(val message: String): BaseListItem()
 }

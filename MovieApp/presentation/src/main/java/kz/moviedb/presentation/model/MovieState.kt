@@ -8,6 +8,4 @@ import kz.moviedb.domain.model.MovieResponse
 sealed class MovieState {
     data class Response(val movie: MovieResponse): MovieState()
     data class Error(val message: String): MovieState()
-    object ShowLoading: MovieState()
-    object HideLoading: MovieState()
 }

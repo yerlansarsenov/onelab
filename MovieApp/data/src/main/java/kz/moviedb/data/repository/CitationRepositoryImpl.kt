@@ -31,7 +31,7 @@ class CitationRepositoryImpl(
                 }
                 dao.deleteCitations()
                 dao.insertCitation(citation)
-                Either.Success(mapper.invert(citation))
+                Either.Success(mapper.convert(citation))
             } else {
                 Either.Error(response.message())
             }
@@ -42,7 +42,7 @@ class CitationRepositoryImpl(
 
     override suspend fun getAllCitationFromDatabase(): List<BaseListItem.RoomCitation> {
         return dao.getAllCitations().map {
-            mapper.invert(it)
+            mapper.convert(it)
         }
     }
 

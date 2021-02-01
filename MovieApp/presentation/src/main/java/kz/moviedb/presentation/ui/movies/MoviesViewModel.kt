@@ -1,16 +1,14 @@
 package kz.moviedb.presentation.ui.movies
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
-import kotlinx.coroutines.cancel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kz.moviedb.domain.model.BaseListItem
 import kz.moviedb.domain.model.Either
 import kz.moviedb.domain.usecase.CitationUseCase
 import kz.moviedb.domain.usecase.SearchUseCase
+import kz.moviedb.presentation.model.LoadingState
 import kz.moviedb.presentation.model.SearchState
 
 /**
@@ -27,10 +25,15 @@ class MoviesViewModel(
     val liveDataState: LiveData<SearchState>
         get() = _liveDataState
 
+    private val _liveDataLoadingState = MutableLiveData<LoadingState>()
+    val liveDataLoadingState: LiveData<LoadingState>
+        get() = _liveDataLoadingState
+
 
     fun searchMoviesByName(name: String) {
+        if (_liveDataState.value != null && _liveDataLoadingState.value != null) return
         viewModelScope.launch {
-            _liveDataState.value = SearchState.ShowLoading
+            _liveDataLoadingState.value = LoadingState.ShowLoading
             val list = citationUseCase.getAllCitationFromDatabase()
             if (list.isNotEmpty()) {
                 _liveDataState.value = SearchState.ResponseList(list)
@@ -49,14 +52,15 @@ class MoviesViewModel(
                     _liveDataState.value = SearchState.Error(result.error)
                 }
             }
-            _liveDataState.value = SearchState.HideLoading
+            _liveDataLoadingState.value = LoadingState.HideLoading
         }
     }
 
 
-    override fun onCleared() {
-        viewModelScope.cancel()
-        super.onCleared()
-    }
+//    override fun onCleared() {
+//        viewModelScope.cancel()
+//        super.onCleared()
+//        Log.e(TAG, "onCleared: here")
+//    }
 
 }

@@ -4,118 +4,21 @@ package kz.moviedb.presentation.utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import java.io.Serializable
-import java.lang.StringBuilder
 
 /**
  * Created by Sarsenov Yerlan on 18.12.2020.
  */
-
-class MyClass {
-    companion object {
-        @JvmStatic
-        fun main(vararg args: String): Unit {
-            val myString = createString {
-                val q = 456
-                append("asd")
-                appendLn("asdsf")
-                appendLn("q = $q")
-            }
-            print(myString)
-            mapOf(
-                "asd" pairWith "qwe"
-            )
-        }
-    }
-}
-
-/**
- * AlertDialog
- */
-
-class MyDialogBuilder(context: Context) {
-    val builder = AlertDialog.Builder(context)
-
-    fun title(text: Int) {
-        builder.setTitle(text)
-    }
-
-    var description: String = ""
-        set(value) {
-            builder.setMessage(value)
-        }
-
-    fun positiveButton(text: Int) : PositiveButtonBuilder = PositiveButtonBuilder(text)
-
-    /*infix fun Int.onClick(dialog: DialogInterface.() -> Unit) : Unit {
-        builder.setPositiveButton(this) {
-            it, _ -> it.dialog()
-        }
-    }*/
-
-    infix fun PositiveButtonBuilder.onClick(dialog: DialogInterface.() -> Unit): Unit {
-        builder.setPositiveButton(this.text) {
-                it, _ -> it.dialog()
-        }
-    }
-
-    class PositiveButtonBuilder(val text: Int) {
-
-    }
-}
-
-inline fun AppCompatActivity.showDialog(builder: MyDialogBuilder.() -> Unit) : Unit{
-    val myAlertDialogBuilder = MyDialogBuilder(this)
-    myAlertDialogBuilder.builder()
-    myAlertDialogBuilder.builder.show()
-}
-
-/**
- *  StringBuilder
- */
-
-class MyStringBuilder {
-    val result = StringBuilder()
-    fun append(text: String) {
-        result.append(text)
-    }
-
-    fun appendLn(text: String) {
-        result.appendLine(text)
-    }
-}
-
-inline fun <reified T> T.createString(builder: MyStringBuilder.() -> Unit) : String {
-    val myStringBuilder = MyStringBuilder()
-    myStringBuilder.append(T::class.java.simpleName + " ")
-    myStringBuilder.builder()
-    return myStringBuilder.result.toString()
-}
-
-/**
- *  Infix function
- */
-
-infix fun <T> T.pairWith(other: T): Pair<T, T> {
-    return Pair(this, other)
-}
 
 /**
  * Extension functions for Fragment, ImageView, RatingBar, Context etc.
@@ -126,80 +29,22 @@ fun View.hideKeyboard() {
     inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }
 
-private const val LOADING_TEXT = "Loading..."
-
 fun <T: Fragment> T.showProcessLoading() : AlertDialog? {
-    val padding = 30
-    var linearLayout : LinearLayout? = LinearLayout(activity)
-    linearLayout?.orientation = LinearLayout.HORIZONTAL
-    linearLayout?.setPadding(padding, padding, padding, padding)
-    linearLayout?.gravity = Gravity.CENTER
-    var llParam = LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.WRAP_CONTENT,
-        LinearLayout.LayoutParams.WRAP_CONTENT)
-    llParam.gravity = Gravity.CENTER
-    linearLayout?.layoutParams = llParam
-
-    var progressBar : ProgressBar? = ProgressBar(activity)
-    progressBar?.isIndeterminate = true
-    progressBar?.setPadding(0, 0, padding, 0)
-    progressBar?.layoutParams = llParam
-
-    llParam = LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT)
-    llParam.gravity = Gravity.CENTER
-
-    var textView : TextView? = TextView(activity)
-    textView?.text = LOADING_TEXT
-    textView?.setTextColor(Color.parseColor("#000000"))
-    textView?.textSize = 20F
-    textView?.layoutParams = llParam
-
-    linearLayout?.addView(progressBar)
-    linearLayout?.addView(textView)
+    val loadingLayout = CustomLoadingLayout(context!!)
 
     val builder = AlertDialog.Builder(activity)
     builder.setCancelable(false)
-    builder.setView(linearLayout)
+    builder.setView(loadingLayout)
 
     return builder.create()
 }
 
 fun <T: Activity> T.showProcessLoading() : AlertDialog? {
-    val padding = 30
-    val linearLayout : LinearLayout = LinearLayout(this)
-    linearLayout.orientation = LinearLayout.HORIZONTAL
-    linearLayout.setPadding(padding, padding, padding, padding)
-    linearLayout.gravity = Gravity.CENTER
-    var llParam = LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.WRAP_CONTENT,
-        LinearLayout.LayoutParams.WRAP_CONTENT)
-    llParam.gravity = Gravity.CENTER
-    linearLayout.layoutParams = llParam
-
-    val progressBar : ProgressBar = ProgressBar(this)
-    progressBar.isIndeterminate = true
-    progressBar.setPadding(0, 0, padding, 0)
-    progressBar.layoutParams = llParam
-
-    llParam = LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT)
-    llParam.gravity = Gravity.CENTER
-
-    val textView : TextView = TextView(this)
-    textView.text = LOADING_TEXT
-    textView.setTextColor(Color.parseColor("#000000"))
-    textView.textSize = 20F
-    textView.layoutParams = llParam
-
-    linearLayout.addView(progressBar)
-    linearLayout.addView(textView)
+    val loadingLayout = CustomLoadingLayout(this)
 
     val builder = AlertDialog.Builder(this)
     builder.setCancelable(false)
-    builder.setView(linearLayout)
+    builder.setView(loadingLayout)
     return builder.create()
 }
 
@@ -231,18 +76,9 @@ fun RatingBar.setImdbRating(rate: String) {
         val rateFloat = rate.toFloat()
         this.rating = rateFloat/2f
     } catch (e: Exception) {
-        val TAG = "RB_Exten_fun"
-        Log.e(TAG, "setImdbRating: ${e.message}")
+        val tag = "RB_Exten_fun"
+        Log.e(tag, "setImdbRating: ${e.message}")
     }
-}
-
-/**
- * check permission
- */
-
-@RequiresApi(Build.VERSION_CODES.M)
-fun Context.checkPermission(permission: String) : Boolean {
-    return this.checkSelfPermission(permission) == PERMISSION_GRANTED
 }
 
 /**

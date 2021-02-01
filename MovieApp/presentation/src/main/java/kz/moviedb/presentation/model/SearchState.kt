@@ -8,6 +8,5 @@ import kz.moviedb.domain.model.BaseListItem
 sealed class SearchState {
     data class ResponseList(val list: List<BaseListItem>): SearchState()
     data class Error(val message: String): SearchState()
-    object ShowLoading: SearchState()
-    object HideLoading: SearchState()
 }
+
