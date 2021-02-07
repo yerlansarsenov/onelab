@@ -33,16 +33,20 @@ class CustomRatingView : CardView {
 
 
     private fun init() {
-        paintRate.style = Paint.Style.FILL
-        paintRate.color = Color.YELLOW
-
-        paintBg.style = Paint.Style.FILL
-        paintBg.color = Color.GRAY
-        paintBg.alpha = 150
-
-        paintText.style = Paint.Style.FILL
-        paintText.color = Color.BLACK
-        paintText.textSize = (height * 0.9).toFloat()
+        paintRate.apply {
+            style = Paint.Style.FILL
+            color = Color.YELLOW
+        }
+        paintBg.apply {
+            style = Paint.Style.FILL
+            color = Color.GRAY
+            alpha = 150
+        }
+        paintText.apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            textSize = (height * 0.9).toFloat()
+        }
         rateWidth = (width * rate / 100.0).toInt()
         text = "${rate/10}/10.0"
     }
@@ -53,8 +57,10 @@ class CustomRatingView : CardView {
         rateWidth = (width * rate / 100.0).toInt()
         text = "${rate/10}/10.0"
         paintText.textSize = (height * 0.5).toFloat()
-        canvas?.drawRect(0F, 0F, width.toFloat(), height.toFloat(), paintBg)
-        canvas?.drawRect(0F, 0F, rateWidth.toFloat(), height.toFloat(), paintRate)
-        canvas?.drawText(text, (width/2.5).toFloat(), (height/2).toFloat(), paintText)
+        canvas?.let {
+            it.drawRect(0F, 0F, width.toFloat(), height.toFloat(), paintBg)
+            it.drawRect(0F, 0F, rateWidth.toFloat(), height.toFloat(), paintRate)
+            it.drawText(text, (width/2.5).toFloat(), (height/2).toFloat(), paintText)
+        }
     }
 }

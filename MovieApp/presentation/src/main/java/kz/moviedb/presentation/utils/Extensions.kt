@@ -31,31 +31,37 @@ fun View.hideKeyboard() {
 
 fun <T: Fragment> T.showProcessLoading() : AlertDialog? {
     val loadingLayout = CustomLoadingLayout(context!!)
-
     val builder = AlertDialog.Builder(activity)
-    builder.setCancelable(false)
-    builder.setView(loadingLayout)
-
+    builder.let {
+        it.setCancelable(false)
+        it.setView(loadingLayout)
+    }
     return builder.create()
 }
 
 fun <T: Activity> T.showProcessLoading() : AlertDialog? {
     val loadingLayout = CustomLoadingLayout(this)
-
     val builder = AlertDialog.Builder(this)
-    builder.setCancelable(false)
-    builder.setView(loadingLayout)
+    builder.let {
+        it.setCancelable(false)
+        it.setView(loadingLayout)
+    }
     return builder.create()
 }
 
 fun Activity.showMatrixLoading(): AlertDialog? {
     val matrixView: CustomMatrixView = CustomMatrixView(this)
     val padding = 30
-    matrixView.setPadding(padding, padding, padding, padding)
-    matrixView.alpha = 0.9F
+    matrixView.apply {
+        setPadding(padding, padding, padding, padding)
+        alpha = 0.9F
+    }
+
     val builder = AlertDialog.Builder(this)
-    builder.setCancelable(false)
-    builder.setView(matrixView)
+    builder.let {
+        it.setCancelable(false)
+        it.setView(matrixView)
+    }
     return builder.create()
 }
 

@@ -30,28 +30,26 @@ class CustomLoadingLayout: LinearLayout {
         this.orientation = HORIZONTAL
         this.setPadding(padding, padding, padding, padding)
         this.gravity = Gravity.CENTER
-        var llParam = LayoutParams(
+        val llParam = LayoutParams(
             LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT)
-        llParam.gravity = Gravity.CENTER
+        llParam.apply {
+            llParam.gravity = Gravity.CENTER
+        }
         this.layoutParams = llParam
-
         val progressBar : ProgressBar = ProgressBar(context)
-        progressBar.isIndeterminate = true
-        progressBar.setPadding(0, 0, padding, 0)
-        progressBar.layoutParams = llParam
-
-        llParam = LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
-        llParam.gravity = Gravity.CENTER
-
+        progressBar.apply {
+            isIndeterminate = true
+            setPadding(0, 0, padding, 0)
+            layoutParams = llParam
+        }
         val textView : TextView = TextView(context)
-        textView.text = LOADING_TEXT
-        textView.setTextColor(Color.parseColor("#000000"))
-        textView.textSize = 20F
-        textView.layoutParams = llParam
-
+        textView.apply {
+            text = LOADING_TEXT
+            setTextColor(Color.parseColor("#000000"))
+            textSize = 20F
+            layoutParams = llParam
+        }
         this.addView(progressBar)
         this.addView(textView)
     }

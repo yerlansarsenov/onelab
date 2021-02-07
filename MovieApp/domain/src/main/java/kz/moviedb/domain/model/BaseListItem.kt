@@ -4,6 +4,7 @@ package kz.moviedb.domain.model
 /**
  * Created by Sarsenov Yerlan on 18.01.2021.
  */
+
 sealed class BaseListItem {
     data class RoomCitation(
         var id: Int = 0,

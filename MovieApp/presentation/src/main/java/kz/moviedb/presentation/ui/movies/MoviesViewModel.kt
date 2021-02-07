@@ -29,7 +29,6 @@ class MoviesViewModel(
     val liveDataLoadingState: LiveData<LoadingState>
         get() = _liveDataLoadingState
 
-
     fun searchMoviesByName(name: String) {
         if (_liveDataState.value != null && _liveDataLoadingState.value != null) return
         viewModelScope.launch {
@@ -41,8 +40,8 @@ class MoviesViewModel(
             when (val result = searchUseCase.getMovieBySearch(name)) {
                 is Either.Success -> {
                     if (_liveDataState.value != null &&
-                        _liveDataState.value is SearchState.ResponseList &&
-                        !(_liveDataState.value as SearchState.ResponseList).list.isNullOrEmpty()) {
+                    _liveDataState.value is SearchState.ResponseList &&
+                    !(_liveDataState.value as SearchState.ResponseList).list.isNullOrEmpty()) {
                         _liveDataState.value = SearchState.ResponseList((_liveDataState.value as SearchState.ResponseList).list.plus(result.response))
                     } else {
                         _liveDataState.value = SearchState.ResponseList(result.response)

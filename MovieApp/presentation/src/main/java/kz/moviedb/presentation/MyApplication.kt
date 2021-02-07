@@ -51,11 +51,13 @@ class MyApplication : Application() {
         ).addTag(CITATION_DOWNLOADING_WORK).build()
         val initWorkRequest = OneTimeWorkRequestBuilder<CitationWorker>().addTag(
             CITATION_DOWNLOADING_WORK_INIT).build()
-        manager.beginUniqueWork(CITATION_DOWNLOADING_WORK_INIT,
-            ExistingWorkPolicy.KEEP, initWorkRequest).enqueue()
-        manager.enqueueUniquePeriodicWork(
-            CITATION_DOWNLOADING_WORK, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
-        )
+        manager.let {
+            it.beginUniqueWork(CITATION_DOWNLOADING_WORK_INIT,
+                ExistingWorkPolicy.KEEP, initWorkRequest).enqueue()
+            it.enqueueUniquePeriodicWork(
+                CITATION_DOWNLOADING_WORK, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
+            )
+        }
     }
 
 }

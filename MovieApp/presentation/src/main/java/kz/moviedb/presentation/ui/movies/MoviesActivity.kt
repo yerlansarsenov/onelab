@@ -28,42 +28,47 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
 
     private val viewModel: MoviesViewModel by viewModel()
 
-    private val adapter: MoviesAdapter by lazy {
+    private val moviesAdapter: MoviesAdapter by lazy {
         MoviesAdapter(::listenOnItemClick)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                LinearLayoutManager.VERTICAL
+        recyclerView.apply {
+            adapter = moviesAdapter
+            layoutManager = LinearLayoutManager(this@MoviesActivity)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MoviesActivity,
+                    LinearLayoutManager.VERTICAL
+                )
             )
-        )
-        viewModel.searchMoviesByName(name)
-        viewModel.liveDataState.observe(this) { state ->
-            when (state) {
-                is SearchState.ResponseList -> {
-                    adapter.submitList(state.list)
+        }
+        with(viewModel) {
+            searchMoviesByName(name)
+            liveDataState.observe(this@MoviesActivity) { state ->
+                when (state) {
+                    is SearchState.ResponseList -> {
+                        moviesAdapter.submitList(state.list)
+                    }
+                    is SearchState.Error -> {
+                        showError(state.message)
+                    }
                 }
-                is SearchState.Error -> {
-                    showError(state.message)
+            }
+            liveDataLoadingState.observe(this@MoviesActivity) { state ->
+                when (state) {
+                    LoadingState.ShowLoading -> {
+                        showLoading()
+                    }
+                    LoadingState.HideLoading -> {
+                        hideLoading()
+                    }
+                    null -> {}
                 }
             }
         }
-        viewModel.liveDataLoadingState.observe(this) { state ->
-            when (state) {
-                LoadingState.ShowLoading -> {
-                    showLoading()
-                }
-                LoadingState.HideLoading -> {
-                    hideLoading()
-                }
-                null -> {}
-            }
-        }
+
     }
 
     private fun listenOnItemClick(imdbId: String) {

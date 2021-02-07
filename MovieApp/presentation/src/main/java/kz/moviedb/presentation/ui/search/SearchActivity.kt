@@ -23,7 +23,6 @@ class SearchActivity : AppCompatActivity(R.layout.ac_search) {
             val text = textSearch.text
             if (text.isNotEmpty()) {
                 it.hideKeyboard()
-                //viewModel.searchMoviesByName(text.toString())
                 openMovies(text.toString())
             } else
                 showToast(EMPTY_TEXT_ERROR)

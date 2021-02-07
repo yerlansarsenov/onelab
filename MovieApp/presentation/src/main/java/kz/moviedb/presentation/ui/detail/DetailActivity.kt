@@ -28,38 +28,43 @@ class DetailActivity : BaseActivity(R.layout.ac_detail) {
 
     private val ratingRecyclerView: RecyclerView by lazy { findViewById(R.id.ratings_rv) }
 
-    private val adapter: RatingAdapter by lazy { RatingAdapter() }
+    private val ratingAdapter: RatingAdapter by lazy { RatingAdapter() }
 
     private val viewModel: DetailViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ratingRecyclerView.adapter = adapter
-        ratingRecyclerView.layoutManager = LinearLayoutManager(this)
-        ratingRecyclerView.isNestedScrollingEnabled = false
-        viewModel.searchMovieById(movieId)
-        viewModel.liveDataMovie.observe(this) { state ->
-            when (state) {
-                is MovieState.Response -> {
-                    setMovie(state.movie)
+        ratingRecyclerView.apply {
+            adapter = ratingAdapter
+            layoutManager = LinearLayoutManager(this@DetailActivity)
+            isNestedScrollingEnabled = false
+        }
+        with(viewModel) {
+            viewModel.searchMovieById(movieId)
+            viewModel.liveDataMovie.observe(this@DetailActivity) { state ->
+                when (state) {
+                    is MovieState.Response -> {
+                        setMovie(state.movie)
+                    }
+                    is MovieState.Error -> {
+                        showError(state.message)
+                    }
                 }
-                is MovieState.Error -> {
-                    showError(state.message)
+            }
+            viewModel.liveDataLoadingState.observe(this@DetailActivity) { state ->
+                when (state) {
+                    LoadingState.ShowLoading -> {
+                        showLoading()
+                    }
+                    LoadingState.HideLoading -> {
+                        hideLoading()
+                    }
+                    null -> {}
                 }
             }
         }
-        viewModel.liveDataLoadingState.observe(this) { state ->
-            when (state) {
-                LoadingState.ShowLoading -> {
-                    showLoading()
-                }
-                LoadingState.HideLoading -> {
-                    hideLoading()
-                }
-                null -> {}
-            }
-        }
+
     }
 
     private fun setMovie(movie: MovieResponse) {
@@ -77,7 +82,7 @@ class DetailActivity : BaseActivity(R.layout.ac_detail) {
         }
         findViewById<TextView>(R.id.over_detail).text = movie.plot
         val list = movie.ratings
-        adapter.submitList(list)
+        ratingAdapter.submitList(list)
     }
 
     override fun onDestroy() {

@@ -30,19 +30,23 @@ class CustomMatrixView : View {
     private var paintInitBg = Paint()
 
     private fun init() {
-        paintTxt.style = Paint.Style.FILL
-        paintTxt.color = Color.GREEN
-        paintTxt.textSize = fontSize.toFloat()
-        paintTxt.typeface = ResourcesCompat.getFont(context, R.font.pt_mono)
-        paintBg.style = Paint.Style.FILL
-        paintBg.color = Color.BLACK
-        paintBg.alpha = 5
-
+        paintTxt.apply {
+            style = Paint.Style.FILL
+            color = Color.GREEN
+            textSize = fontSize.toFloat()
+            typeface = ResourcesCompat.getFont(context, R.font.pt_mono)
+        }
+        paintBg.apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            alpha = 5
+        }
         paintBgBmp.color = Color.BLACK
-
-        paintInitBg.style = Paint.Style.FILL
-        paintInitBg.color = Color.BLACK
-        paintInitBg.alpha = 255
+        paintInitBg.apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            alpha = 255
+        }
     }
 
     constructor(context: Context, attr: AttributeSet) : super(context, attr) {
