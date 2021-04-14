@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import kz.moviedb.data.model.BaseListItemData
 
 /**
@@ -14,6 +15,9 @@ import kz.moviedb.data.model.BaseListItemData
 interface CitationDao {
     @Query("select * from citations_table")
     suspend fun getAllCitations() : List<BaseListItemData.RoomCitationData>
+
+    @Query("select * from citations_table")
+    fun getAllCitationsFlow() : Flow<List<BaseListItemData.RoomCitationData>>
 
     @Query("select * from citations_table")
     fun getAllCitationsLiveData() : LiveData<List<BaseListItemData.RoomCitationData>>

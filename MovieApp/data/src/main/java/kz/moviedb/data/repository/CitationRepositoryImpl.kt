@@ -1,5 +1,7 @@
 package kz.moviedb.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kz.moviedb.data.FORMAT
 import kz.moviedb.data.METHOD
 import kz.moviedb.data.api.work_manager.CitationApi
@@ -43,6 +45,14 @@ class CitationRepositoryImpl(
     override suspend fun getAllCitationFromDatabase(): List<BaseListItem.RoomCitation> {
         return dao.getAllCitations().map {
             mapper.convert(it)
+        }
+    }
+
+    override fun getAllCitationFromDatabaseFlow(): Flow<List<BaseListItem.RoomCitation>> {
+        return dao.getAllCitationsFlow().map { list ->
+            list.map { item ->
+                mapper.convert(item)
+            }
         }
     }
 

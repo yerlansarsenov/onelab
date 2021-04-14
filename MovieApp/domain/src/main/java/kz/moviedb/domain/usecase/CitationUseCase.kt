@@ -9,4 +9,6 @@ class CitationUseCase(private val repository: CitationRepository) {
     suspend fun getCitationFromInternet() = repository.getCitationFromInternet()
 
     suspend fun getAllCitationFromDatabase() = repository.getAllCitationFromDatabase()
+
+    fun getAllCitationFromDatabaseFlow() = repository.getAllCitationFromDatabaseFlow()
 }

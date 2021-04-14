@@ -34,6 +34,7 @@ class MoviesAdapter(
         when (currentList[position]) {
             is BaseListItem.Search -> R.layout.it_movie
             is BaseListItem.RoomCitation -> R.layout.it_citation
+            else -> -1
         }
 }
 

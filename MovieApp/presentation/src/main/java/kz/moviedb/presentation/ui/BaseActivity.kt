@@ -22,8 +22,8 @@ abstract class BaseActivity(resId: Int) : AppCompatActivity(resId) {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         progressDialog = null
+        super.onDestroy()
     }
 
     fun showLoading() {

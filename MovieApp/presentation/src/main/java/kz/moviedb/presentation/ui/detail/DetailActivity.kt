@@ -40,28 +40,26 @@ class DetailActivity : BaseActivity(R.layout.ac_detail) {
             layoutManager = LinearLayoutManager(this@DetailActivity)
             isNestedScrollingEnabled = false
         }
-        with(viewModel) {
-            viewModel.searchMovieById(movieId)
-            viewModel.liveDataMovie.observe(this@DetailActivity) { state ->
-                when (state) {
-                    is MovieState.Response -> {
-                        setMovie(state.movie)
-                    }
-                    is MovieState.Error -> {
-                        showError(state.message)
-                    }
+        viewModel.searchMovieById(movieId)
+        viewModel.liveDataMovie.observe(this@DetailActivity) { state ->
+            when (state) {
+                is MovieState.Response -> {
+                    setMovie(state.movie)
+                }
+                is MovieState.Error -> {
+                    showError(state.message)
                 }
             }
-            viewModel.liveDataLoadingState.observe(this@DetailActivity) { state ->
-                when (state) {
-                    LoadingState.ShowLoading -> {
-                        showLoading()
-                    }
-                    LoadingState.HideLoading -> {
-                        hideLoading()
-                    }
-                    null -> {}
+        }
+        viewModel.liveDataLoadingState.observe(this@DetailActivity) { state ->
+            when (state) {
+                LoadingState.ShowLoading -> {
+                    showLoading()
                 }
+                LoadingState.HideLoading -> {
+                    hideLoading()
+                }
+                null -> {}
             }
         }
 

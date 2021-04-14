@@ -1,9 +1,11 @@
 package kz.moviedb.presentation.ui.movies
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kz.moviedb.domain.model.BaseListItem
 import kz.moviedb.presentation.R
 import kz.moviedb.presentation.model.LoadingState
 import kz.moviedb.presentation.model.SearchState
@@ -55,6 +57,14 @@ class MoviesActivity : BaseActivity(R.layout.ac_movies) {
                         showError(state.message)
                     }
                 }
+            }
+            liveDataCitation.observe(this@MoviesActivity) { list ->
+                if (list.isNotEmpty()) {
+                    findViewById<TextView>(R.id.citation_text).text = list[0].quoteText
+                    findViewById<TextView>(R.id.citation_author).text = list[0].quoteAuthor
+                }
+//                moviesAdapter.currentList.add(0, list[0])
+//                moviesAdapter.notifyItemInserted(0)
             }
             liveDataLoadingState.observe(this@MoviesActivity) { state ->
                 when (state) {

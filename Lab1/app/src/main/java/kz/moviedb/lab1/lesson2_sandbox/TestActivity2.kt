@@ -1,9 +1,11 @@
 package kz.moviedb.lab1.lesson2_sandbox
 
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import kz.moviedb.lab1.R
 import kz.moviedb.lab1.ui.MainActivity
 
@@ -11,6 +13,7 @@ const val EXTRA_1 = "EXTRA_1"
 const val EXTRA_2 = "EXTRA_2"
 
 class TestActivity2 : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test2)
